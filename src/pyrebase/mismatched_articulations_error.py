@@ -1,5 +1,5 @@
-class MismatchedArticulationsException(Exception):
-  def __init__(self, list_1, list_2, *args):
+class MismatchedArticulationsError(Exception):
+  def __init__(self, list_1: list, list_2: list, *args):
     super().__init__(args)
     self.list_1 = list_1
     self.list_2 = list_2

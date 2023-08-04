@@ -2,7 +2,7 @@ import pytest
 
 from src.pyrebase.register import Register
 from src.pyrebase.rotation import Rotation
-from src.pyrebase.repeated_articulation_exception import RepeatedArticulationException
+from src.pyrebase.repeated_articulation_error import RepeatedArticulationError
 
 class TestRegister:
   def test_init(self):
@@ -27,7 +27,7 @@ class TestRegister:
     with pytest.raises(TypeError):
       Register(14)
 
-    with pytest.raises(RepeatedArticulationException):
+    with pytest.raises(RepeatedArticulationError):
       Register(['a1', 'a1'])
 
   def test_setitem(self):

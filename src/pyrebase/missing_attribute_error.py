@@ -1,5 +1,5 @@
-class MissingAttributeException(Exception):
-  def __init__(self, attribute, *args):
+class MissingAttributeError(Exception):
+  def __init__(self, attribute: str, *args):
     super().__init__(args)
     self.attribute = attribute
 

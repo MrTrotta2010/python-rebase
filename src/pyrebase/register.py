@@ -1,5 +1,5 @@
 from .rotation import Rotation
-from .repeated_articulation_exception import RepeatedArticulationException
+from .repeated_articulation_error import RepeatedArticulationError
 
 
 class Register:
@@ -45,7 +45,7 @@ class Register:
 				if articulation not in self._articulations:
 					self._articulations[articulation] = Rotation()
 				else:
-					raise RepeatedArticulationException(articulation, articulations)
+					raise RepeatedArticulationError(articulation, articulations)
 		
 		else:
 			raise TypeError(f'Invalid articulation parameter (expected dictionary or list): {articulations}')

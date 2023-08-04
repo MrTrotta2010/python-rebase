@@ -1,5 +1,5 @@
-﻿class RepeatedArticulationException(Exception):
-  def __init__(self, art, art_list, *args):
+﻿class RepeatedArticulationError(Exception):
+  def __init__(self, art: str, art_list: list, *args):
     super().__init__(args)
     self.art = art
     self.art_list = art_list
