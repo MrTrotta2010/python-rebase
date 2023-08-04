@@ -1,8 +1,8 @@
 from .rotation import Rotation
+from .repeated_articulation_exception import RepeatedArticulationException
+
 
 class Register:
-	# private Dictionary<string, Rotation> _articulations;
-
 	def __init__(self, articulations: list | dict = None):
 		self._articulations = {}
 		self.__set_articulations(articulations)
@@ -35,7 +35,9 @@ class Register:
 		if articulations is None: return
 
 		if isinstance(articulations, dict):
+			print(articulations)
 			for art, value in articulations.items():
+				print(art, value)
 				self._articulations[art] = self.__force_rotation(value)
 
 		elif isinstance(articulations, list):
@@ -43,12 +45,14 @@ class Register:
 				if articulation not in self._articulations:
 					self._articulations[articulation] = Rotation()
 				else:
-					# throw new RepeatedArticulationException("Duplicate articulation in list", articulationList);
-					pass
+					raise RepeatedArticulationException(articulation, articulations)
+		
+		else:
+			raise TypeError(f'Invalid articulation parameter (expected dictionary or list): {articulations}')
 
 	def __force_rotation(self, obj: Rotation | list) -> Rotation:
+		print(obj)
+		if obj is None: return None
 		if isinstance(obj, Rotation): return obj
-		elif isinstance(obj, list): return Rotation(obj[0], obj[1], obj[2])
-		else:
-			# throw new InvalidTypeException("Invalid type for rotation", object);
-			pass
+		if isinstance(obj, list): return Rotation(obj[0], obj[1], obj[2])
+		raise TypeError(f'Invalid object to be used as rotation (expected Rotation or list): {obj}')

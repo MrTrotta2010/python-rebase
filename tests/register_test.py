@@ -1,5 +1,8 @@
+import pytest
+
 from src.pyrebase.register import Register
 from src.pyrebase.rotation import Rotation
+from src.pyrebase.repeated_articulation_exception import RepeatedArticulationException
 
 class TestRegister:
   def test_init(self):
@@ -16,6 +19,16 @@ class TestRegister:
     assert register.articulations() == ['a1', 'a2']
     assert isinstance(register['a1'], Rotation)
     assert register['a1'] == register['a2']
+  
+  def test_force_rotation_invalid_parameters(self):
+    with pytest.raises(TypeError):
+      Register({ 'a1': 12 })
+
+    with pytest.raises(TypeError):
+      Register(14)
+
+    with pytest.raises(RepeatedArticulationException):
+      Register(['a1', 'a1'])
 
   def test_setitem(self):
     register1 = Register()
