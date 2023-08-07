@@ -21,14 +21,18 @@ class Register:
 
 		return string[:-2] + '}'
 	
-	def articulation_count(self) -> int:
+	def __get_articulation_count(self) -> int:
 		return len(self._articulations)
 
-	def articulations(self) -> list:
+	def __get_articulations(self) -> list:
 		return list(self._articulations.keys())
 
-	def is_empty(self) -> bool:
+	def __get_is_empty(self) -> bool:
 		return len(self._articulations) == 0
+
+	articulation_count = property(__get_articulation_count)
+	articulations = property(__get_articulations)
+	is_empty = property(__get_is_empty)
 
 	# Define quais articulações estarão no dicionário
 	def __set_articulations(self, articulations: list | dict = None) -> None:

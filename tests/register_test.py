@@ -10,13 +10,13 @@ class TestRegister:
     register_l = Register(['a1'])
     register_d = Register({ 'a1': None, 'a2': None })
 
-    assert register_n.articulations() == []
-    assert register_l.articulations() == ['a1']
-    assert register_d.articulations() == ['a1', 'a2']
+    assert register_n.articulations == []
+    assert register_l.articulations == ['a1']
+    assert register_d.articulations == ['a1', 'a2']
   
   def test_force_rotation(self):
     register = Register({ 'a1': [1, 2, 3], 'a2': Rotation(1, 2, 3) })
-    assert register.articulations() == ['a1', 'a2']
+    assert register.articulations == ['a1', 'a2']
     assert isinstance(register['a1'], Rotation)
     assert register['a1'] == register['a2']
   
@@ -47,10 +47,10 @@ class TestRegister:
     register = Register(['a1', 'a2', 'a3'])
     empty_register = Register()
 
-    assert register.articulation_count() == 3
-    assert register.articulations() == ['a1', 'a2', 'a3']
-    assert register.is_empty() == False
-    assert empty_register.is_empty() == True
+    assert register.articulation_count == 3
+    assert register.articulations == ['a1', 'a2', 'a3']
+    assert register.is_empty == False
+    assert empty_register.is_empty == True
 
   def test_str(self):
     register = Register(['a1', 'a2'])
