@@ -9,3 +9,6 @@ class Rotation:
 
   def __str__(self):
     return f'[{round(self.x, 4)}, {round(self.y, 4)}, {round(self.z, 4)}]'
+
+  def to_array(self):
+    return [self.x, self.y, self.z]

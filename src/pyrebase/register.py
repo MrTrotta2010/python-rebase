@@ -13,6 +13,15 @@ class Register:
 	def __getitem__(self, articulation: str) -> Rotation:
 		return self._articulations[articulation]
 
+	def __eq__(self, other) -> bool:
+		if not isinstance(other, Register): return False
+		if self.articulations != other.articulations: return False
+
+		for art in self.articulations:
+			if self[art] != other[art]: return False
+
+		return True
+
 	def __str__(self) -> str:
 		string = '{'
 
@@ -20,7 +29,7 @@ class Register:
 			string += f'{art}: {str(value)}, '
 
 		return string[:-2] + '}'
-	
+
 	def __get_articulation_count(self) -> int:
 		return len(self._articulations)
 
@@ -39,9 +48,7 @@ class Register:
 		if articulations is None: return
 
 		if isinstance(articulations, dict):
-			print(articulations)
 			for art, value in articulations.items():
-				print(art, value)
 				self._articulations[art] = self.__force_rotation(value)
 
 		elif isinstance(articulations, list):
@@ -55,7 +62,6 @@ class Register:
 			raise TypeError(f'Invalid articulation parameter (expected dictionary or list): {articulations}')
 
 	def __force_rotation(self, obj: Rotation | list) -> Rotation:
-		print(obj)
 		if obj is None: return None
 		if isinstance(obj, Rotation): return obj
 		if isinstance(obj, list): return Rotation(obj[0], obj[1], obj[2])
