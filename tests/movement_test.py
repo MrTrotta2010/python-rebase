@@ -60,8 +60,6 @@ class TestMovement:
     original_dict['duration'] = None
     original_dict['numberOfRegisters'] = None
 
-    print(movement.to_json(True))
-
     assert movement_dict.keys() == original_dict.keys()
     assert movement_dict['label'] == original_dict['label']
     assert movement_dict['fps'] == original_dict['fps']
