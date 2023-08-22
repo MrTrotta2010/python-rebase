@@ -1,10 +1,16 @@
 from json import dumps
 
 from .register import Register
+from .util import is_valid_movement_field
 from .mismatched_articulations_error import MismatchedArticulationsError
+
+FIELDS = ['id', 'label', 'description', 'device', 'articulations', 'fps', 'duration', 'numberOfRegisters', 'insertionDate',
+              'updateDate', 'sessionId', 'professionalId', 'patientId', 'appCode', 'appData', 'articulationData']
 
 class Movement:
   def __init__(self, properties_dict: dict = {}):
+    self.__validate_movement_dict(properties_dict)
+
     self.id = properties_dict.get('id')
     self.label = properties_dict.get('label')
     self.description = properties_dict.get('description')
@@ -103,7 +109,7 @@ class Movement:
     return array
 
   # Atualiza os valores de number_of_registers e duration
-  def __update_data(self, number_of_registers: int = 0):
+  def __update_data(self, number_of_registers: int = 0) -> None:
     self.number_of_registers = number_of_registers
     if self.fps is not None and self.fps != 0: self.duration = self.number_of_registers / self.fps
 
@@ -122,3 +128,11 @@ class Movement:
 
     return True
 
+  def __validate_movement_dict(self, dictionary: dict) -> None:
+    for key in dictionary.keys():
+      if key not in FIELDS:
+        raise ValueError(f"Invalid attribute in Movement object: '{key}'")
+      
+      value = dictionary[key]
+      if not is_valid_movement_field(key, value):
+        raise ValueError(f"Inappropriate value for attribute '{key}' in Movement object: {type(value)} {value}")

@@ -1,9 +1,14 @@
-from .movement import Movement
-from .util import is_valid_str, is_valid_number, is_valid_attr
+from .util import is_valid_session_field
 from json import dumps
+
+FIELDS = ['id', 'title', 'description', 'professionalId', 'patientSessionNumber', 'insertionDate', 'updateDate', 'patientId',
+          'patientAge', 'patientHeight', 'patientWeight', 'mainComplaint', 'historyOfCurrentDisease', 'historyOfPastDisease',
+          'diagnosis', 'relatedDiseases', 'medications', 'physicalEvaluation', 'numberOfMovements', 'movements']
 
 class Session:
   def __init__(self, properties_dict: dict = {}):
+    self.__validate_session_dict(properties_dict)
+
     self.id = properties_dict.get('id')
     self.title = properties_dict.get('title')
     self.description = properties_dict.get('description')
@@ -35,33 +40,34 @@ class Session:
 
   def to_dict(self, exclude: list = []) -> dict:
     dictionary = {}
-    if is_valid_attr(self.id): dictionary['id'] = self.id
-    if is_valid_str(self.title): dictionary['title'] = self.title
-    if is_valid_str(self.description): dictionary['description'] = self.description
-    if is_valid_attr(self.professional_id): dictionary['professionalId'] = self.professional_id
-    if is_valid_number(self.patient_session_number): dictionary['patientSessionNumber'] = self.patient_session_number
-    if is_valid_str(self.insertion_date): dictionary['insertionDate'] = self.insertion_date
-    if is_valid_str(self.update_date): dictionary['updateDate'] = self.update_date
+    if self.id is not None: dictionary['id'] = self.id
+    if self.title is not None: dictionary['title'] = self.title
+    if self.description is not None: dictionary['description'] = self.description
+    if self.professional_id is not None: dictionary['professionalId'] = self.professional_id
+    if self.patient_session_number is not None: dictionary['patientSessionNumber'] = self.patient_session_number
+    if self.insertion_date is not None: dictionary['insertionDate'] = self.insertion_date
+    if self.update_date is not None: dictionary['updateDate'] = self.update_date
 
     patient = {}
-    if is_valid_attr(self.patient_id): patient['id'] = self.patient_id
-    if is_valid_number(self.patient_age): patient['age'] = self.patient_age
-    if is_valid_number(self.patient_height): patient['height'] = self.patient_height
-    if is_valid_number(self.patient_weight): patient['weight'] = self.patient_weight
+    if self.patient_id is not None: patient['id'] = self.patient_id
+    if self.patient_age is not None: patient['age'] = self.patient_age
+    if self.patient_height is not None: patient['height'] = self.patient_height
+    if self.patient_weight is not None: patient['weight'] = self.patient_weight
     if len(patient) > 0: dictionary['patient'] = patient
 
     medical_data = {}
-    if is_valid_str(self.main_complaint): medical_data['mainComplaint'] = self.main_complaint
-    if is_valid_str(self.history_of_current_disease): medical_data['historyOfCurrentDisease'] = self.history_of_current_disease
-    if is_valid_str(self.history_of_past_disease): medical_data['historyOfPastDisease'] = self.history_of_past_disease
-    if is_valid_str(self.diagnosis): medical_data['diagnosis'] = self.diagnosis
-    if is_valid_str(self.related_diseases): medical_data['relatedDiseases'] = self.related_diseases
-    if is_valid_str(self.medications): medical_data['medications'] = self.medications
-    if is_valid_str(self.physical_evaluation): medical_data['physicalEvaluation'] = self.physical_evaluation
+    if self.main_complaint is not None: medical_data['mainComplaint'] = self.main_complaint
+    if self.history_of_current_disease is not None: medical_data['historyOfCurrentDisease'] = self.history_of_current_disease
+    if self.history_of_past_disease is not None: medical_data['historyOfPastDisease'] = self.history_of_past_disease
+    if self.diagnosis is not None: medical_data['diagnosis'] = self.diagnosis
+    if self.related_diseases is not None: medical_data['relatedDiseases'] = self.related_diseases
+    if self.medications is not None: medical_data['medications'] = self.medications
+    if self.physical_evaluation is not None: medical_data['physicalEvaluation'] = self.physical_evaluation
     if len(medical_data) > 0: dictionary['medicalData'] = medical_data
 
-    if is_valid_number(self.number_of_movements): dictionary['numberOfMovements'] = self.number_of_movements
-    dictionary['movements'] = [movement.to_dict() for movement in self.movements]
+    if self.number_of_movements is not None: dictionary['numberOfMovements'] = self.number_of_movements
+    if self.movements is not None and len(self.movements) > 0:
+      dictionary['movements'] = [movement.to_dict() for movement in self.movements]
 
     for key in exclude:
       if key in dictionary: del dictionary[key]
@@ -73,3 +79,12 @@ class Session:
 
   def __str__(self):
     return str(self.to_dict())
+
+  def __validate_session_dict(self, dictionary: dict) -> None:
+    for key in dictionary.keys():
+      if key not in FIELDS:
+        raise ValueError(f"Invalid attribute in Session object: '{key}'")
+      
+      value = dictionary[key]
+      if not is_valid_session_field(key, value):
+        raise ValueError(f"Inappropriate value for attribute '{key}' in Session object: {type(value)} {value}")

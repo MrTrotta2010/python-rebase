@@ -11,6 +11,13 @@ class TestMovement:
     assert movement.label == 'test'
     assert movement.device == 'py'
 
+  def test_init_error(self):
+    with pytest.raises(ValueError):
+      Movement({ 'label': 'test', 'invalid': 'key', 'device': 'py' })
+
+    with pytest.raises(ValueError):
+      Movement({ 'label': [], 'device': 2 })
+
   def test_init_with_data(self):
     with pytest.raises(MismatchedArticulationsError):
       movement = Movement({ 'articulationData': [{ 'a1': [1, 2, 3] }] })

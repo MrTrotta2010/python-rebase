@@ -2,7 +2,6 @@ import pytest
 
 from src.pyrebase.session import Session
 from src.pyrebase.movement import Movement
-from src.pyrebase.register import Register
 from src.pyrebase.mismatched_articulations_error import MismatchedArticulationsError
 
 class TestSession:
@@ -11,6 +10,13 @@ class TestSession:
 
     assert session.title == 'Test'
     assert session.id == 0
+
+  def test_init_error(self):
+    with pytest.raises(ValueError):
+      Session({ 'title': 'Test', 'invalid': 'key', 'id': 0 })
+
+    with pytest.raises(ValueError):
+      Session({ 'title': 2, 'id': {} })
 
   def test_init_with_movement(self):
     movements = [
