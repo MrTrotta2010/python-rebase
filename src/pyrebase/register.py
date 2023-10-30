@@ -23,12 +23,10 @@ class Register:
 		return True
 
 	def __str__(self) -> str:
-		string = '{'
-
-		for art, value in self._articulations.items():
-			string += f'{art}: {str(value)}, '
-
-		return string[:-2] + '}'
+		return str(self.to_dict())
+	
+	def to_dict(self) -> dict:
+		return { art: value.to_array() for art, value in self._articulations.items() }
 
 	def __get_articulation_count(self) -> int:
 		return len(self._articulations)
