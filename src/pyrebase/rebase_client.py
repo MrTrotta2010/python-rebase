@@ -6,8 +6,7 @@ from .movement import Movement
 from .session import Session
 from enum import Enum
 
-class ReBaseClient:
-	_SERVER_URL = "http://projetorastreamento.com.br:3030/"
+_SERVER_URL = "http://projetorastreamento.com.br:3030/"
 
 class __Resource(Enum):
 	MOVEMENT = 0
