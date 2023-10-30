@@ -1,5 +1,5 @@
 def is_valid_str(string) -> bool:
-  return isinstance(string, str) and len(string) > 0
+  return isinstance(string, str)
 
 def is_valid_number(number) -> bool:
   return isinstance(number, int) or isinstance(number, float)
@@ -9,6 +9,7 @@ def is_valid_id(attribute) -> bool:
 
 def is_valid_movement_field(field: str, value: any) -> bool:
   if field == 'id': return is_valid_id(value)
+  if field == '_id': return is_valid_id(value)
   if field == 'label': return is_valid_str(value)
   if field == 'description': return is_valid_str(value)
   if field == 'device': return is_valid_str(value)
@@ -23,7 +24,7 @@ def is_valid_movement_field(field: str, value: any) -> bool:
   if field == 'patientId': return is_valid_id(value)
   if field == 'appCode': return is_valid_id(value)
   if field == 'appData': return True
-  if field == 'articulationData': return isinstance(value, list)
+  if field == 'registers': return isinstance(value, list)
   return False
 
 def is_valid_session_field(field: str, value: any) -> bool:

@@ -4,14 +4,14 @@ from .register import Register
 from .util import is_valid_movement_field
 from .mismatched_articulations_error import MismatchedArticulationsError
 
-FIELDS = ['id', 'label', 'description', 'device', 'articulations', 'fps', 'duration', 'numberOfRegisters', 'insertionDate',
-              'updateDate', 'sessionId', 'professionalId', 'patientId', 'appCode', 'appData', 'articulationData']
+FIELDS = ['id', '_id', 'label', 'description', 'device', 'articulations', 'fps', 'duration', 'numberOfRegisters', 'insertionDate',
+              'updateDate', 'sessionId', 'professionalId', 'patientId', 'appCode', 'appData', 'registers']
 
 class Movement:
   def __init__(self, properties_dict: dict = {}):
     self.__validate_movement_dict(properties_dict)
 
-    self.id = properties_dict.get('id')
+    self.id = properties_dict.get('id') or properties_dict.get('_id')
     self.label = properties_dict.get('label')
     self.description = properties_dict.get('description')
     self.device = properties_dict.get('device')
@@ -27,25 +27,25 @@ class Movement:
     self.app_code = properties_dict.get('appCode')
     self.app_data = properties_dict.get('appData')
 
-    if 'articulationData' in properties_dict:
-      self._articulation_data = self.__force_registers(properties_dict['articulationData'])
-      if self.number_of_registers is None: self.__update_data(len(self._articulation_data))
+    if 'registers' in properties_dict:
+      self._registers = self.__force_registers(properties_dict['registers'])
+      if self.number_of_registers is None: self.__update_data(len(self._registers))
     else:
-      self._articulation_data = []
+      self._registers = []
 
   def __str__(self):
     return str(self.to_dict())
 
-  def __get_articulation_data(self):
-    return self._articulation_data
+  def __get_registers(self):
+    return self._registers
 
-  def __set_articulation_data(self, data: list):
+  def __set_registers(self, data: list):
     if not isinstance(data, list): return
 
-    self._articulation_data = self.__force_registers(data)
+    self._registers = self.__force_registers(data)
     self.__update_data(len(data))
 
-  articulation_data = property(__get_articulation_data, __set_articulation_data)
+  registers = property(__get_registers, __set_registers)
 
   def add_register(self, register: Register) -> None:
     if not isinstance(register, Register): register = Register(register)
@@ -54,9 +54,9 @@ class Movement:
       self.articulations = register.articulations
 
     else:
-      self.__validate_articulation_data(register.articulations)
+      self.__validate_articulations(register.articulations)
 
-    self._articulation_data.append(register)
+    self._registers.append(register)
     self.__update_data(self.number_of_registers + 1 if self.number_of_registers is not None else 1)
   
   def to_dict(self, exclude: list = []) -> dict:
@@ -79,14 +79,8 @@ class Movement:
     if self.app_code is not None: dictionary['app']['code'] = self.app_code
     if self.app_data is not None: dictionary['app']['data'] = self.app_data
 
-    if self.articulation_data is not None and len(self.articulation_data) > 0:
-      dictionary['articulationData'] = { }
-      first_register = True
-      for register in self.articulation_data:
-        for articulation in self.articulations:
-          if first_register: dictionary['articulationData'][articulation] = []
-          dictionary['articulationData'][articulation].append(register[articulation].to_array())
-        first_register = False
+    if self.registers is not None and len(self.registers) > 0:
+      dictionary['registers'] = [register.to_dict() for register in self.registers]
 
     for key in exclude:
       if key in dictionary: del dictionary[key]
@@ -94,16 +88,16 @@ class Movement:
     return dictionary
 
   def to_json(self, update: bool = False) -> str:
-    if update:
-      return dumps(self.to_dict(exclude=['id', 'insertionDate', 'updateDate', 'numberOfRegisters', 'duration', 'articulationData', 'patientId', 'professionalId', 'articulations']))
+    exclude = ['id', 'insertionDate', 'updateDate', 'professionalId', 'patientId',  'articulations']
+    if update: exclude += ['numberOfRegisters', 'duration', 'registers']
 
-    return dumps(self.to_dict(exclude=['id', 'professionalId', 'patientId', 'insertionDate', 'updateDate', 'articulations']))
+    return dumps({ 'movement': self.to_dict(exclude=exclude) })
 
   def __force_registers(self, data: list) -> list:
     array = []
     for register in data:
       r = register if isinstance(register, Register) else Register(register)
-      self.__validate_articulation_data(r.articulations)
+      self.__validate_articulations(r.articulations)
       array.append(r)
 
     return array
@@ -113,7 +107,7 @@ class Movement:
     self.number_of_registers = number_of_registers
     if self.fps is not None and self.fps != 0: self.duration = self.number_of_registers / self.fps
 
-  def __validate_articulation_data(self, articulations: list) -> None:
+  def __validate_articulations(self, articulations: list) -> None:
     if not self.__compare_articulation_lists(self.articulations, articulations):
       raise MismatchedArticulationsError(self.articulations, articulations)
 
