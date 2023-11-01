@@ -7,7 +7,6 @@ from src.pyrebase.rotation import Rotation
 
 import src.pyrebase.rebase_client as rebase_client
 
-
 movement = Movement({
 	'label': 'NewAPITest',
 	'fps': 30,
@@ -45,7 +44,7 @@ response = rebase_client.fetch_movements(professional_id=movement.professional_i
 print(f'\nDownloaded: {response}')
 
 if response.has_data('movements'):
-	print('> Downloaded movements are already of Movement class') 
+	# Downloaded movements are already of Movement class' 
 	for idx, downloaded_movement in enumerate(response.get_data('movements')):
 		print(f'\n{idx + 1}:', type(downloaded_movement))
 		print(response.get_data('movements')[0].to_dict(exclude=['registers']))
