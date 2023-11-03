@@ -6,8 +6,9 @@ from src.pyrebase.mismatched_articulations_error import MismatchedArticulationsE
 
 class TestMovement:
   def test_init(self):
-    movement = Movement({ 'label': 'test', 'device': 'py' })
+    movement = Movement({ 'id': 1, 'label': 'test', 'device': 'py' })
 
+    assert movement.id == 1
     assert movement.label == 'test'
     assert movement.device == 'py'
 
