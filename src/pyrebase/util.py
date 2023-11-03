@@ -5,7 +5,7 @@ def is_valid_number(number) -> bool:
   return isinstance(number, int) or isinstance(number, float)
 
 def is_valid_id(attribute) -> bool:
-  return is_valid_str(attribute) or is_valid_number(attribute)
+  return (is_valid_str(attribute) and attribute != '') or (is_valid_number(attribute) and attribute != 0)
 
 def is_valid_movement_field(field: str, value: any) -> bool:
   if field == 'id': return is_valid_id(value)
@@ -29,6 +29,7 @@ def is_valid_movement_field(field: str, value: any) -> bool:
 
 def is_valid_session_field(field: str, value: any) -> bool:
   if field == 'id': return is_valid_id(value)
+  if field == '_id': return is_valid_id(value)
   if field == 'title': return is_valid_str(value)
   if field == 'description': return is_valid_str(value)
   if field == 'professionalId': return is_valid_id(value)
@@ -48,4 +49,18 @@ def is_valid_session_field(field: str, value: any) -> bool:
   if field == 'physicalEvaluation': return is_valid_str(value)
   if field == 'numberOfMovements': return is_valid_number(value)
   if field == 'movements': return isinstance(value, list)
+
+  if field == 'patient.id': return is_valid_id(value)
+  if field == 'patient.age': return is_valid_number(value)
+  if field == 'patient.height': return is_valid_number(value)
+  if field == 'patient.weight': return is_valid_number(value)
+
+  if field == 'medicalData.mainComplaint': return is_valid_str(value)
+  if field == 'medicalData.historyOfCurrentDisease': return is_valid_str(value)
+  if field == 'medicalData.historyOfPastDisease': return is_valid_str(value)
+  if field == 'medicalData.diagnosis': return is_valid_str(value)
+  if field == 'medicalData.relatedDiseases': return is_valid_str(value)
+  if field == 'medicalData.medications': return is_valid_str(value)
+  if field == 'medicalData.physicalEvaluation': return is_valid_str(value)
+
   return False

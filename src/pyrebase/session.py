@@ -1,35 +1,43 @@
-from .util import is_valid_session_field
 from json import dumps
 
-FIELDS = ['id', 'title', 'description', 'professionalId', 'patientSessionNumber', 'insertionDate', 'updateDate', 'patientId',
-          'patientAge', 'patientHeight', 'patientWeight', 'mainComplaint', 'historyOfCurrentDisease', 'historyOfPastDisease',
-          'diagnosis', 'relatedDiseases', 'medications', 'physicalEvaluation', 'numberOfMovements', 'movements']
+from .movement import Movement
+from .util import is_valid_session_field
+
+FIELDS = { 'id': None, '_id': None, 'title': None, 'description': None, 'professionalId': None, 'patientSessionNumber': None,
+          'insertionDate': None, 'updateDate': None, 'patientId': None, 'patientAge': None, 'patientHeight': None,
+          'patientWeight': None, 'mainComplaint': None, 'historyOfCurrentDisease': None, 'historyOfPastDisease': None,
+          'diagnosis': None, 'relatedDiseases': None, 'medications': None, 'physicalEvaluation': None,
+          'numberOfMovements': None, 'movements': None, 'patient': { 'id': None, 'age': None, 'height': None, 'weight': None },
+           'medicalData': { 'mainComplaint': None, 'historyOfCurrentDisease': None, 'historyOfPastDisease': None,
+                           'diagnosis': None, 'relatedDiseases': None, 'medications': None, 'physicalEvaluation': None } }
 
 class Session:
   def __init__(self, properties_dict: dict = {}):
     self.__validate_session_dict(properties_dict)
 
-    self.id = properties_dict.get('id')
+    self.id = properties_dict.get('id') or properties_dict.get('_id')
     self.title = properties_dict.get('title')
     self.description = properties_dict.get('description')
     self.professional_id = properties_dict.get('professionalId')
     self.patient_session_number = properties_dict.get('patientSessionNumber')
     self.insertion_date = properties_dict.get('insertionDate')
     self.update_date = properties_dict.get('updateDate')
-    self.patient_id = properties_dict.get('patientId')
-    self.patient_age = properties_dict.get('patientAge')
-    self.patient_height = properties_dict.get('patientHeight')
-    self.patient_weight = properties_dict.get('patientWeight')
-    self.main_complaint = properties_dict.get('mainComplaint')
-    self.history_of_current_disease = properties_dict.get('historyOfCurrentDisease')
-    self.history_of_past_disease = properties_dict.get('historyOfPastDisease')
-    self.diagnosis = properties_dict.get('diagnosis')
-    self.related_diseases = properties_dict.get('relatedDiseases')
-    self.medications = properties_dict.get('medications')
-    self.physical_evaluation = properties_dict.get('physicalEvaluation')
-    self.number_of_movements = properties_dict.get('numberOfMovements')
 
-    self.movements = properties_dict.get('movements') or []
+    self.patient_id = properties_dict.get('patientId') or properties_dict.get('patient', {}).get('id')
+    self.patient_age = properties_dict.get('patientAge') or properties_dict.get('patient', {}).get('age')
+    self.patient_height = properties_dict.get('patientHeight') or properties_dict.get('patient', {}).get('height')
+    self.patient_weight = properties_dict.get('patientWeight') or properties_dict.get('patient', {}).get('weight')
+
+    self.main_complaint = properties_dict.get('mainComplaint') or properties_dict.get('medicalData', {}).get('mainComplaint')
+    self.history_of_current_disease = properties_dict.get('historyOfCurrentDisease') or properties_dict.get('medicalData', {}).get('historyOfCurrentDisease')
+    self.history_of_past_disease = properties_dict.get('historyOfPastDisease') or properties_dict.get('medicalData', {}).get('historyOfPastDisease')
+    self.diagnosis = properties_dict.get('diagnosis') or properties_dict.get('medicalData', {}).get('diagnosis')
+    self.related_diseases = properties_dict.get('relatedDiseases') or properties_dict.get('medicalData', {}).get('relatedDiseases')
+    self.medications = properties_dict.get('medications') or properties_dict.get('medicalData', {}).get('medications')
+    self.physical_evaluation = properties_dict.get('physicalEvaluation') or properties_dict.get('medicalData', {}).get('physicalEvaluation')
+
+    self.movements = self.__force_movements(properties_dict['movements']) if 'movements' in properties_dict else []
+    self.number_of_movements = properties_dict.get('numberOfMovements')
 
   def __get_duration(self):
     duration = 0
@@ -38,7 +46,7 @@ class Session:
   
   duration = property(__get_duration)
 
-  def to_dict(self, exclude: list = []) -> dict:
+  def to_dict(self, exclude: list = [], movement_exclude: list = []) -> dict:
     dictionary = {}
     if self.id is not None: dictionary['id'] = self.id
     if self.title is not None: dictionary['title'] = self.title
@@ -67,7 +75,7 @@ class Session:
 
     if self.number_of_movements is not None: dictionary['numberOfMovements'] = self.number_of_movements
     if self.movements is not None and len(self.movements) > 0:
-      dictionary['movements'] = [movement.to_dict() for movement in self.movements]
+      dictionary['movements'] = [movement.to_dict(exclude=movement_exclude) for movement in self.movements]
 
     for key in exclude:
       if key in dictionary: del dictionary[key]
@@ -75,7 +83,13 @@ class Session:
     return dictionary
 
   def to_json(self, update: bool = False) -> str:
-    return dumps(self.to_dict(exclude=['id', 'insertionDate', 'updateDate', 'movements', 'numberOfMovements'] if update else ['id', 'insertionDate', 'updateDate']))
+    exclude = ['id', 'insertionDate', 'updateDate']
+    movement_exclude = ['id', 'insertionDate', 'updateDate', 'professionalId', 'patientId',  'articulations']
+    if update:
+      exclude += ['movements', 'numberOfMovements']
+      movement_exclude += ['numberOfRegisters', 'duration', 'registers']
+
+    return dumps({ 'session': self.to_dict(exclude=exclude, movement_exclude=movement_exclude) })
 
   def __str__(self):
     return str(self.to_dict())
@@ -85,6 +99,22 @@ class Session:
       if key not in FIELDS:
         raise ValueError(f"Invalid attribute in Session object: '{key}'")
       
-      value = dictionary[key]
-      if not is_valid_session_field(key, value):
-        raise ValueError(f"Inappropriate value for attribute '{key}' in Session object: {type(value)} {value}")
+      if FIELDS[key] is None:
+        value = dictionary[key]
+        if not is_valid_session_field(key, value):
+          raise ValueError(f"Inappropriate value for attribute '{key}' in Session object: {type(value)} {value}")
+      
+      else:
+        if not isinstance(dictionary[key], dict):
+          raise ValueError(f"Inappropriate value for attribute '{key}' in Session object: {type(dictionary[key])} {dictionary[key]}")
+
+        for subKey in dictionary[key].keys():
+          if subKey not in FIELDS[key]:
+            raise ValueError(f"Invalid attribute in Session object: '{key}.{subKey}'")
+
+          value = dictionary[key][subKey]
+          if not is_valid_session_field(f'{key}.{subKey}', value):
+            raise ValueError(f"Inappropriate value for attribute '{key}.{subKey}' in Session object: {type(value)} {value}")
+
+  def __force_movements(self, data: list) -> list:
+    return [m if isinstance(m, Movement) else Movement(m) for m in data]
