@@ -3,7 +3,7 @@
 from json import dumps
 
 from .register import Register
-from .util import is_valid_movement_field
+from .util import is_valid_movement_field, exclude_keys_from_dict
 from .mismatched_articulations_error import MismatchedArticulationsError
 
 FIELDS = ['id', '_id', 'label', 'description', 'device', 'articulations', 'fps',
@@ -93,10 +93,7 @@ class Movement:
         if self.registers is not None and len(self.registers) > 0:
             dictionary['registers'] = [register.to_dict() for register in self.registers]
 
-        if exclude is not None:
-            for key in exclude:
-                if key in dictionary:
-                    del dictionary[key]
+        exclude_keys_from_dict(dictionary, exclude)
 
         return dictionary
 

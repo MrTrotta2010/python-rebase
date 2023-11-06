@@ -76,3 +76,11 @@ def is_valid_session_field(field: str, value: any) -> bool:
     if field == 'medicalData.physicalEvaluation': return is_valid_str(value)
 
     return False
+
+def exclude_keys_from_dict(dictionary: dict, keys: list):
+    """Excludes a given list of keys from a dictionary"""
+
+    if keys is not None:
+        for key in keys:
+            if key in dictionary:
+                del dictionary[key]

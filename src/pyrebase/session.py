@@ -3,7 +3,7 @@
 from json import dumps
 
 from .movement import Movement
-from .util import is_valid_session_field
+from .util import is_valid_session_field, exclude_keys_from_dict
 
 FIELDS = { 'id': None, '_id': None, 'title': None, 'description': None, 'professionalId': None,
             'patientSessionNumber': None, 'insertionDate': None, 'updateDate': None,
@@ -94,10 +94,7 @@ class Session:
         if self.movements is not None and len(self.movements) > 0:
             dictionary['movements'] = [movement.to_dict(exclude=movement_exclude) for movement in self.movements]
 
-        if exclude is not None:
-            for key in exclude:
-                if key in dictionary:
-                    del dictionary[key]
+        exclude_keys_from_dict(dictionary, exclude)
 
         return dictionary
 
