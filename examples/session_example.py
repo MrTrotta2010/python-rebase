@@ -1,12 +1,10 @@
+"""Module that provides usage examples of the Session class"""
 import sys
-sys.path.append('..')
-
 from src.pyrebase.session import Session
 from src.pyrebase.movement import Movement
-from src.pyrebase.register import Register
-from src.pyrebase.rotation import Rotation
-
 import src.pyrebase.rebase_client as rebase_client
+
+sys.path.append('..')
 
 session = Session({
 	'title': 'NewAPITest',
@@ -18,7 +16,8 @@ session = Session({
 print('> Inserting an empty session')
 response = rebase_client.insert_session(session)
 print(f'Inserted: {response}', '\n')
-if not response.has_data('session'): sys.exit(1)
+if not response.has_data('session'):
+    sys.exit(1)
 
 print("> Now we can add a Movement to the Session we've just created")
 session_id = response.get_data('session').id
@@ -31,12 +30,14 @@ movement = Movement({
 })
 response = rebase_client.insert_movement(movement)
 print(f'Inserted: {response}', '\n')
-if not response.has_data('movement'): sys.exit(2)
+if not response.has_data('movement'):
+    sys.exit(2)
 
 print('> If we search for the Session, it will come with a Movement')
 response = rebase_client.find_session(session_id)
 print(f'Found? {response}', '\n')
-if not response.has_data('session'): sys.exit(3)
+if not response.has_data('session'):
+    sys.exit(3)
 
 print("> Now, let's delete both")
 movement_id = response.get_data('session').movements[0].id
@@ -52,8 +53,8 @@ session = Session({
 	'description': 'This is an empty session',
 	'professionalId': 'MrTrotta2010',
 	'patientId': '007',
-  'movements': [
-    {
+    'movements': [
+        {
 			'label': 'NewAPITest',
 			'fps': 30,
 			'sessionId': session_id,
@@ -70,7 +71,8 @@ print('Type of register:', type(session.movements[0].registers[0]))
 
 response = rebase_client.insert_session(session)
 print(f'Inserted: {response}', '\n')
-if not response.has_data('session'): sys.exit(4)
+if not response.has_data('session'):
+    sys.exit(4)
 
 print("> Now, let's update this new Session")
 print("If we update the Session's patientId or professionalId, \
@@ -87,15 +89,15 @@ response = rebase_client.fetch_sessions(professional_id=session.professional_id,
 print(f'Downloaded: {response}', '\n')
 
 if response.has_data('sessions'):
-	print('> Downloaded sessions are already of Session class')
-	for idx, downloaded_session in enumerate(response.get_data('sessions')):
-		print(f'{idx + 1}:', type(downloaded_session))
-		print(downloaded_session.to_dict(exclude=['movements']))
+    print('> Downloaded sessions are already of Session class')
+    for idx, downloaded_session in enumerate(response.get_data('sessions')):
+        print(f'{idx + 1}:', type(downloaded_session))
+        print(downloaded_session.to_dict(exclude=['movements']))
 
-		print('And their movements are already of Movement class')
-		for idx_m, downloaded_movement in enumerate(downloaded_session.movements):
-			print(f'{idx_m + 1}:', type(downloaded_movement))
-			print(downloaded_movement.to_dict(exclude=['registers']))
+        print('And their movements are already of Movement class')
+        for idx_m, downloaded_movement in enumerate(downloaded_session.movements):
+            print(f'{idx_m + 1}:', type(downloaded_movement))
+            print(downloaded_movement.to_dict(exclude=['registers']))
 
 print("\n> We can delete both the Session and all it's movements by using the parameter 'deep'")
 movement_id = session.movements[0].id

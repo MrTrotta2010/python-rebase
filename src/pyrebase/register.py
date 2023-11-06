@@ -1,66 +1,75 @@
+"""Module that provides the Register class"""
+
 from .rotation import Rotation
 from .repeated_articulation_error import RepeatedArticulationError
 
-
 class Register:
-	def __init__(self, articulations: list | dict = None):
-		self._articulations = {}
-		self.__set_articulations(articulations)
+    """Represents a ReBase Register"""
 
-	def __setitem__(self, articulation: str, rotation: Rotation | list) -> None:
-		self._articulations[articulation] = self.__force_rotation(rotation)
+    def __init__(self, articulations: list | dict = None):
+        self._articulations = {}
+        self.__set_articulations(articulations)
 
-	def __getitem__(self, articulation: str) -> Rotation:
-		return self._articulations[articulation]
+    def __setitem__(self, articulation: str, rotation: Rotation | list) -> None:
+        self._articulations[articulation] = self.__force_rotation(rotation)
 
-	def __eq__(self, other) -> bool:
-		if not isinstance(other, Register): return False
-		if self.articulations != other.articulations: return False
+    def __getitem__(self, articulation: str) -> Rotation:
+        return self._articulations[articulation]
 
-		for art in self.articulations:
-			if self[art] != other[art]: return False
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, Register):
+            return False
+        if self.articulations != other.articulations:
+            return False
 
-		return True
+        for art in self.articulations:
+            if self[art] != other[art]:
+                return False
 
-	def __str__(self) -> str:
-		return str(self.to_dict())
-	
-	def to_dict(self) -> dict:
-		return { art: value.to_array() for art, value in self._articulations.items() }
+        return True
 
-	def __get_articulation_count(self) -> int:
-		return len(self._articulations)
+    def __str__(self) -> str:
+        return str(self.to_dict())
 
-	def __get_articulations(self) -> list:
-		return list(self._articulations.keys())
+    def to_dict(self) -> dict:
+        """Converts the Register to a dictionary"""
 
-	def __get_is_empty(self) -> bool:
-		return len(self._articulations) == 0
+        return { art: value.to_array() for art, value in self._articulations.items() }
 
-	articulation_count = property(__get_articulation_count)
-	articulations = property(__get_articulations)
-	is_empty = property(__get_is_empty)
+    def __get_articulation_count(self) -> int:
+        return len(self._articulations)
 
-	# Define quais articulações estarão no dicionário
-	def __set_articulations(self, articulations: list | dict = None) -> None:
-		if articulations is None: return
+    def __get_articulations(self) -> list:
+        return list(self._articulations.keys())
 
-		if isinstance(articulations, dict):
-			for art, value in articulations.items():
-				self._articulations[art] = self.__force_rotation(value)
+    def __get_is_empty(self) -> bool:
+        return len(self._articulations) == 0
 
-		elif isinstance(articulations, list):
-			for articulation in articulations:
-				if articulation not in self._articulations:
-					self._articulations[articulation] = Rotation()
-				else:
-					raise RepeatedArticulationError(articulation, articulations)
-		
-		else:
-			raise TypeError(f'Invalid articulation parameter (expected dictionary or list): {articulations}')
+    articulation_count = property(__get_articulation_count)
+    articulations = property(__get_articulations)
+    is_empty = property(__get_is_empty)
 
-	def __force_rotation(self, obj: Rotation | list) -> Rotation:
-		if obj is None: return None
-		if isinstance(obj, Rotation): return obj
-		if isinstance(obj, list): return Rotation(obj[0], obj[1], obj[2])
-		raise TypeError(f'Invalid object to be used as rotation (expected Rotation or list): {obj}')
+    # Define quais articulações estarão no dicionário
+    def __set_articulations(self, articulations: list | dict = None) -> None:
+        if articulations is None:
+            return
+
+        if isinstance(articulations, dict):
+            for art, value in articulations.items():
+                self._articulations[art] = self.__force_rotation(value)
+
+        elif isinstance(articulations, list):
+            for articulation in articulations:
+                if articulation not in self._articulations:
+                    self._articulations[articulation] = Rotation()
+                else:
+                    raise RepeatedArticulationError(articulation, articulations)
+
+        else:
+            raise TypeError(f'Invalid articulation parameter (expected dictionary or list): {articulations}')
+
+    def __force_rotation(self, obj: Rotation | list) -> Rotation:
+        if obj is None: return None
+        if isinstance(obj, Rotation): return obj
+        if isinstance(obj, list): return Rotation(obj[0], obj[1], obj[2])
+        raise TypeError(f'Invalid object to be used as rotation (expected Rotation or list): {obj}')
