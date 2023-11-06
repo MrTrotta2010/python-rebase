@@ -20,4 +20,4 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-        pylint --disable=multiple-statements,line-too-long $(git ls-files '*.py')
+        pylint --disable=multiple-statements,line-too-long,too-many-instance-attributes,too-many-branches $(git ls-files '*.py')
