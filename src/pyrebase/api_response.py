@@ -21,7 +21,7 @@ class APIResponse:
         API_ERROR = 11
 
     def __init__(self, response_type: ResponseType = None, status: int = 0, code: int = 200,
-                    data: dict = None, meta: dict = None): # pylint: disable=too-many-arguments
+                    data: dict = None, meta: dict = None):
         self.response_type = response_type
         self.status = status
         self.code = code

@@ -20,7 +20,7 @@ class _Method(Enum):
     PUT = 2
     DELETE = 3
 
-def fetch_movements(professional_id: str = '', patient_id: str = '', movement_label: str = '', articulations: list = None, legacy: bool = False, page: int = 0, per: int = 0, previous_id: str = '') -> APIResponse: # pylint: disable=too-many-arguments
+def fetch_movements(professional_id: str = '', patient_id: str = '', movement_label: str = '', articulations: list = None, legacy: bool = False, page: int = 0, per: int = 0, previous_id: str = '') -> APIResponse:
     """Gets a list of Movements. Can be filtered by professional_id, patient_id, movement_label
 	and articulations. Supports pagination. Use the legacy parameter to retrieve the Movements
     in the old ReBase format"""
@@ -56,7 +56,7 @@ def delete_movement(movement_id: str) -> APIResponse:
 
     return __send_request(_Method.DELETE, _Resource.MOVEMENT, APIResponse.ResponseType.DELETE_MOVEMENT, movement_id)
 
-def fetch_sessions(professional_id: str = "", patient_id: str = "", movement_label: str = "", articulations: list = None, legacy: bool = False, page: int = 0, per: int = 0, previous_id: str = '') -> APIResponse: # pylint: disable=too-many-arguments
+def fetch_sessions(professional_id: str = "", patient_id: str = "", movement_label: str = "", articulations: list = None, legacy: bool = False, page: int = 0, per: int = 0, previous_id: str = '') -> APIResponse:
     """Gets a list of Sessions. Can be filtered by professional_id and patient_id.
     The Sessions' Movements can be filtered by movement_label and articulations.
     Supports pagination. Use the legacy parameter to retrieve the Sessions
@@ -93,7 +93,7 @@ def delete_session(session_id: str, deep: bool = False) -> APIResponse:
 
     return __send_request(_Method.DELETE, _Resource.SESSION, APIResponse.ResponseType.DELETE_SESSION, session_id, __format_params(deep=deep))
 
-def __send_request(method: _Method, resource: _Resource, response_type: APIResponse.ResponseType, resource_id: str = None, params: dict = None, data: dict = None) -> APIResponse: # pylint: disable=too-many-arguments
+def __send_request(method: _Method, resource: _Resource, response_type: APIResponse.ResponseType, resource_id: str = None, params: dict = None, data: dict = None) -> APIResponse:
     url = _SERVER_URL + ('movement' if resource == _Resource.MOVEMENT else 'session')
     if resource_id is not None:
         url += f'/{resource_id}'
