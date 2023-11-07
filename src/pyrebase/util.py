@@ -8,7 +8,7 @@ def is_valid_str(string) -> bool:
 def is_valid_number(number) -> bool:
     """Checks wether a given number is valid"""
 
-    return isinstance(number, int) or isinstance(number, float)
+    return isinstance(number, (int, float))
 
 def is_valid_id(attribute) -> bool:
     """Checks wether a given id is valid"""

@@ -1,3 +1,5 @@
+# pylint: disable=missing-module-docstring, missing-function-docstring
+
 import pytest
 
 from src.pyrebase.register import Register
@@ -77,3 +79,5 @@ class TestRegister:
     def test_to_dict(self):
         dictionary = { 'a1': [1, 2, 3], 'a2': [4, 5, 6] }
         assert Register(dictionary).to_dict() == dictionary
+
+# pylint: enable=missing-module-docstring, missing-function-docstring

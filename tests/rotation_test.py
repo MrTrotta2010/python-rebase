@@ -1,3 +1,5 @@
+# pylint: disable=missing-module-docstring, missing-function-docstring
+
 from src.pyrebase.rotation import Rotation
 
 class TestRotation:
@@ -34,3 +36,5 @@ class TestRotation:
         assert Rotation(1, 2, 3) != Rotation(1, 2)
         assert Rotation(1, 2, 3) != Rotation(1, 2, 5)
         assert Rotation(1, 2, 3) != 7
+
+# pylint: enable=missing-module-docstring, missing-function-docstring

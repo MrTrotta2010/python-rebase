@@ -1,3 +1,5 @@
+# pylint: disable=missing-module-docstring, missing-function-docstring
+
 import pytest
 
 from src.pyrebase.session import Session
@@ -118,3 +120,5 @@ class TestSession:
         assert str(session) == expected_str
         assert session.to_json(update=False) == expected_json
         assert session.to_json(update=True) == expected_update_json
+
+# pylint: enable=missing-module-docstring, missing-function-docstring

@@ -1,3 +1,5 @@
+# pylint: disable=missing-module-docstring, missing-function-docstring
+
 import pytest
 
 from src.pyrebase.missing_attribute_error import MissingAttributeError
@@ -23,3 +25,5 @@ class TestExceptions:
         assert str(missing_e) == "Essential attribute 'attribute' is missing from request"
         assert str(mismatched_e) == "Articulation lists do not match: ['a1'] and ['a2']"
         assert str(repeated_e) == "Duplicate articulation 'a1' in list ['a1', 'a1']"
+
+# pylint: enable=missing-module-docstring, missing-function-docstring

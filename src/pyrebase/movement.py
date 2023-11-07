@@ -67,7 +67,7 @@ class Movement:
 
         self._registers.append(register)
         self.__update_data(self.number_of_registers + 1 if self.number_of_registers is not None else 1)
-    
+
     def to_dict(self, exclude: list = None) -> dict:
         """Converts the Movement to a dictionary. Receives a list of attributes to be ignored"""
 
@@ -85,7 +85,7 @@ class Movement:
         if self.session_id is not None: dictionary['sessionId'] = self.session_id
         if self.professional_id is not None: dictionary['professionalId'] = self.professional_id
         if self.patient_id is not None: dictionary['patientId'] = self.patient_id
-        
+
         if self.app_code is not None or self.app_data is not None: dictionary['app'] = {}
         if self.app_code is not None: dictionary['app']['code'] = self.app_code
         if self.app_data is not None: dictionary['app']['data'] = self.app_data

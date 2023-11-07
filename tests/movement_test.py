@@ -1,3 +1,5 @@
+# pylint: disable=missing-module-docstring, missing-function-docstring
+
 import pytest
 
 from src.pyrebase.movement import Movement
@@ -79,3 +81,5 @@ class TestMovement:
         assert str(movement) == expected_str
         assert movement.to_json(update=False) == expected_json
         assert movement.to_json(update=True) == expected_update_json
+
+# pylint: enable=missing-module-docstring, missing-function-docstring
