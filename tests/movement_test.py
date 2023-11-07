@@ -1,4 +1,4 @@
-# pylint: disable=missing-module-docstring, missing-function-docstring
+# pylint: disable=missing-module-docstring, missing-class-docstring, missing-function-docstring
 
 import pytest
 
@@ -82,4 +82,4 @@ class TestMovement:
         assert movement.to_json(update=False) == expected_json
         assert movement.to_json(update=True) == expected_update_json
 
-# pylint: enable=missing-module-docstring, missing-function-docstring
+# pylint: enable=missing-module-docstring, missing-class-docstring, missing-function-docstring

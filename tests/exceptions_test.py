@@ -1,4 +1,4 @@
-# pylint: disable=missing-module-docstring, missing-function-docstring
+# pylint: disable=missing-module-docstring, missing-class-docstring, missing-function-docstring
 
 import pytest
 
@@ -26,4 +26,4 @@ class TestExceptions:
         assert str(mismatched_e) == "Articulation lists do not match: ['a1'] and ['a2']"
         assert str(repeated_e) == "Duplicate articulation 'a1' in list ['a1', 'a1']"
 
-# pylint: enable=missing-module-docstring, missing-function-docstring
+# pylint: enable=missing-module-docstring, missing-class-docstring, missing-function-docstring

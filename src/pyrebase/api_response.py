@@ -21,7 +21,7 @@ class APIResponse:
         API_ERROR = 11
 
     def __init__(self, response_type: ResponseType = None, status: int = 0, code: int = 200,
-                    data: dict = None, meta: dict = None):
+                    data: dict = None, meta: dict = None): # pylint: disable=too-many-arguments
         self.response_type = response_type
         self.status = status
         self.code = code
@@ -58,6 +58,8 @@ class APIResponse:
         return key in self._meta
 
     def __get_human_response_type(self):
+        # pylint: disable=too-many-return-statements
+
         if self.response_type == APIResponse.ResponseType.FETCH_MOVEMENTS:
             return 'Fetch Movements'
         if self.response_type == APIResponse.ResponseType.FIND_MOVEMENT:

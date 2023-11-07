@@ -1,4 +1,4 @@
-# pylint: disable=missing-module-docstring, missing-function-docstring
+# pylint: disable=missing-module-docstring, missing-class-docstring, missing-function-docstring
 
 import pytest
 
@@ -80,4 +80,4 @@ class TestRegister:
         dictionary = { 'a1': [1, 2, 3], 'a2': [4, 5, 6] }
         assert Register(dictionary).to_dict() == dictionary
 
-# pylint: enable=missing-module-docstring, missing-function-docstring
+# pylint: enable=missing-module-docstring, missing-class-docstring, missing-function-docstring
