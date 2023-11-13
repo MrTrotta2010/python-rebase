@@ -51,9 +51,11 @@ class APIResponse:
         return f'APIResponse: {{ type: {self.human_response_type}, status: {self.status}, ' + \
             f'code: {self.code},\n\tdata: {{ {self.__str_data()} }},\n\tmeta: {self._meta}\n}}'
 
-    def success(self) -> bool:
+    def __get_success(self) -> bool:
         """Returns true if the response was successful, false otherwise"""
         return self.status == 0
+
+    success = property(__get_success)
 
     def get_data(self, key: str = None):
         """Returns the data associated with the given key, or None if the key is not found"""
