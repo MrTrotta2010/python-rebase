@@ -17,20 +17,20 @@
 # You should have received a copy of the GNU General Public License
 # along with PyReBase.  If not, see <https://www.gnu.org/licenses/>
 
-def is_valid_str(string) -> bool:
+def is_valid_str(value) -> bool:
     """Checks wether a given string is valid"""
 
-    return isinstance(string, str)
+    return isinstance(value, str)
 
-def is_valid_number(number) -> bool:
+def is_valid_number(value) -> bool:
     """Checks wether a given number is valid"""
 
-    return isinstance(number, (int, float))
+    return isinstance(value, (int, float))
 
-def is_valid_id(attribute) -> bool:
+def is_valid_id(value) -> bool:
     """Checks wether a given id is valid"""
 
-    return (is_valid_str(attribute) and attribute != '') or (is_valid_number(attribute) and attribute != 0)
+    return (is_valid_str(value) and value != '') or (is_valid_number(value) and value > 0)
 
 def is_valid_movement_field(field: str, value: any) -> bool:
     """Checks wether a given field-value pair is valid for a Movement object"""
