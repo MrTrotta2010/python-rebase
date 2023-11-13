@@ -1,8 +1,8 @@
 """Module that provides usage examples of the Session class"""
 import sys
-from src.pyrebase import rebase_client
-from src.pyrebase.session import Session
-from src.pyrebase.movement import Movement
+from src.python_rebase import rebase_client
+from src.python_rebase.session import Session
+from src.python_rebase.movement import Movement
 
 sys.path.append('..')
 

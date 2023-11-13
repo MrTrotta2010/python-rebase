@@ -1,9 +1,9 @@
 """Module that provides usage examples of the Movement class"""
 import sys
-from src.pyrebase import rebase_client
-from src.pyrebase.movement import Movement
-from src.pyrebase.register import Register
-from src.pyrebase.rotation import Rotation
+from src.python_rebase import rebase_client
+from src.python_rebase.movement import Movement
+from src.python_rebase.register import Register
+from src.python_rebase.rotation import Rotation
 
 sys.path.append('..')
 

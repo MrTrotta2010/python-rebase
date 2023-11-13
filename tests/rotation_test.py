@@ -1,6 +1,6 @@
 # pylint: disable=missing-module-docstring, missing-class-docstring, missing-function-docstring
 
-from src.pyrebase.rotation import Rotation
+from src.python_rebase.rotation import Rotation
 
 class TestRotation:
     def test_init(self):

@@ -2,8 +2,8 @@
 
 import pytest
 
-from src.pyrebase.session import Session
-from src.pyrebase.movement import Movement
+from src.python_rebase.session import Session
+from src.python_rebase.movement import Movement
 
 class TestSession:
     def test_init(self):

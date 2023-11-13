@@ -2,9 +2,9 @@
 
 import pytest
 
-from src.pyrebase.register import Register
-from src.pyrebase.rotation import Rotation
-from src.pyrebase.repeated_articulation_error import RepeatedArticulationError
+from src.python_rebase.register import Register
+from src.python_rebase.rotation import Rotation
+from src.python_rebase.repeated_articulation_error import RepeatedArticulationError
 
 class TestRegister:
     def test_init(self):

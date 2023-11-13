@@ -3,7 +3,7 @@ requires = ["hatchling", "requests>=2.31.0"]
 build-backend = "hatchling.build"
 
 [project]
-name = "pyrebase"
+name = "python-rebase"
 version = "0.1.0"
 authors = [
   { name="Tiago Trotta", email="mrtrotta2010@gmail.com" },

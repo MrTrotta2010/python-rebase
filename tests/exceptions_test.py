@@ -2,9 +2,9 @@
 
 import pytest
 
-from src.pyrebase.missing_attribute_error import MissingAttributeError
-from src.pyrebase.mismatched_articulations_error import MismatchedArticulationsError
-from src.pyrebase.repeated_articulation_error import RepeatedArticulationError
+from src.python_rebase.missing_attribute_error import MissingAttributeError
+from src.python_rebase.mismatched_articulations_error import MismatchedArticulationsError
+from src.python_rebase.repeated_articulation_error import RepeatedArticulationError
 
 class TestExceptions:
     def test_exceptions(self):

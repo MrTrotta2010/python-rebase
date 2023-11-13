@@ -1,8 +1,8 @@
-# PyReBase
+# Python ReBase
 Este projeto é uma API escrita em Python para comunicação com o ReBase, um banco de dados de sessões de reabilitação física.
 
 ## Índice
-- [PyReBase](#pyrebase)
+- [Python ReBase](#python-rebase)
   - [Índice](#índice)
   - [Visão Geral](#visão-geral)
     - [Sobre o ReBase](#sobre-o-rebase)
@@ -30,34 +30,34 @@ Este projeto é uma API escrita em Python para comunicação com o ReBase, um ba
     - [Erros](#erros)
 
 ## Visão Geral
-O pacote PyReBase contém classes-modelo para Sessões e Movimentos. A classe `api_response` modela de forma generalizada as respostas enviadas pelo `ReBase REST Server (RRS)`. O módulo `rebase_client` é responsável pelo envio de requisições ao RRS. Estão inclusas também algumas exceções personalizadas e funções utilitárias. Todos os módulos se encontram na pasta `src/pyrebase`.
+O pacote Python ReBase contém classes-modelo para Sessões e Movimentos. A classe `api_response` modela de forma generalizada as respostas enviadas pelo `ReBase REST Server (RRS)`. O módulo `rebase_client` é responsável pelo envio de requisições ao RRS. Estão inclusas também algumas exceções personalizadas e funções utilitárias. Todos os módulos se encontram na pasta `src/python_rebase`.
 
 ### Sobre o ReBase
-O ReBase, do inglês *Rehabilitation Database*, é um baco de dados dedicado ao armazenamento de movimentos corporais, com foco em reabilitação neurofuncional e neuromotora. Apesar do enfoque, o ReBase é capaz de armazenar qualquer tipo de movimento corporal gravado por qualquer técnica de captura de movimentos, desde que siga o padrão definido. Para isto serve a API PyReBase!
+O ReBase, do inglês *Rehabilitation Database*, é um baco de dados dedicado ao armazenamento de movimentos corporais, com foco em reabilitação neurofuncional e neuromotora. Apesar do enfoque, o ReBase é capaz de armazenar qualquer tipo de movimento corporal gravado por qualquer técnica de captura de movimentos, desde que siga o padrão definido. Para isto serve a API Python ReBase!
 
 Os **Movimentos** do ReBase representam os movimentos corporais capturados e são compostos por metadados, uma lista de *Articulações* e uma lista de **Registros**, que representam as rotações em X, y e z da Articulação a cada instante do Movimento. Os Movimentos podem pertencer a **Sessões**. Cada Sessão também contem metadados e pode conter múltiplos movimentos.
 
 ## Instalação
 O PyRebase pode ser instalado pelo terminal através do **PyPi** com os comandos:
 ```
-pip3 install pyrebase
+pip3 install python-rebase
 ```
 ou
 ```
-python3 -m pip install pyrebase
+python3 -m pip install python-rebase
 ```
 
 ## Requisitos
 * Esta biblioteca depende da biblioteca `requests`, utilizada para enviar requisições HTTP;
-* O PyReBase está disponível apenas para Python 3.10 ou superior.
+* O Python ReBase está disponível apenas para Python 3.10 ou superior.
 
 ## Quick Start
 Para utilizar a API, basta importar a biblioteca no começo do seu arquivo .py
 
 ### Criando um Movimento
 ```Python
-from pyrebase.movement import Movement
-from pyrebase import rebase_client
+from python_rebase.movement import Movement
+from python_rebase import rebase_client
 
 # Crie um objeto Movement
 movement = Movement({
@@ -70,7 +70,7 @@ movement = Movement({
 # Adicione os Registros ao Movimento
 # Cada registro representa um "frame" do movimento
 # Os registros contêm as rotações de cada articulação em um dado momento 
-# Apesar de o PyReBase incluir classes-modelo para os Registros e para Rotações, os métodos também aceitam dicionários e listas como parâmetros
+# Apesar de o Python ReBase incluir classes-modelo para os Registros e para Rotações, os métodos também aceitam dicionários e listas como parâmetros
 movement.add_register(Register(
     {
         '1': Rotation(1.0, 1.0, 1.0), # Rotações da articulação "1"
@@ -85,7 +85,7 @@ print(f'Inserted: {response}')
 
 ### Criando uma Sessão
 ```Python
-from pyrebase.session import Session
+from python_rebase.session import Session
 
 # Crie um objeto Sessão.
 # A Sessão pode ser criada vazia ou com Movimentos, sejam eles da classe Movement ou dicionários simples
@@ -192,7 +192,7 @@ Assim, cabe ao desenvolvedor analisar sua aplicação e decidir qual método de 
 Esta biblioteca inclui a pasta `examples`, que inclui alguns códigos-exemplo básicos de utilização da API.
 
 ## Documentação Completa
-A seguir, estão incluídas tabelas e descrições detalhando todas as classes e módulos da API PyReBase.
+A seguir, estão incluídas tabelas e descrições detalhando todas as classes e módulos da API Python ReBase.
 
 ### Módulos
 
@@ -418,7 +418,7 @@ Modela uma Sessão do ReBase.
 | Converte a Sessão para json. O parâmetro update modifica o json gerado: para requisições de criação use update como `False` e para requisições de atualização use update como `True` |
 
 ### Erros
-A biblioteca PyReBase define alguns erros personalizados para os modelos de dados e casos de uso do ReBase. São eles:
+A biblioteca Python ReBase define alguns erros personalizados para os modelos de dados e casos de uso do ReBase. São eles:
 
 1. **MismatchedArticulationsError:** disparado ao criar um Movimento com Registros que tenham articulações diferentes das definidas no Movimento ou ao adicionar a um Movimento um Registro que tenha articulações diferentes das do Movimento;
 2. **MissingAttributeError:** disparado ao tentar enviar uma requisição ao RRS e algum parâmetro não tenha um atributo obrigatório;

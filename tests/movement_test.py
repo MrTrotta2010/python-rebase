@@ -2,9 +2,9 @@
 
 import pytest
 
-from src.pyrebase.movement import Movement
-from src.pyrebase.register import Register
-from src.pyrebase.mismatched_articulations_error import MismatchedArticulationsError
+from src.python_rebase.movement import Movement
+from src.python_rebase.register import Register
+from src.python_rebase.mismatched_articulations_error import MismatchedArticulationsError
 
 class TestMovement:
     def test_init(self):
