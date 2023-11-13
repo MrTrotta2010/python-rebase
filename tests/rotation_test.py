@@ -31,6 +31,10 @@ class TestRotation:
         rotation = Rotation(1, 2, 3)
         assert rotation.to_list() == [1, 2, 3]
 
+    def test_to_tuple(self):
+        rotation = Rotation(1, 2, 3)
+        assert rotation.to_tuple() == (1, 2, 3)
+
     def test_eq(self):
         assert Rotation(1, 2, 3) == Rotation(1, 2, 3)
         assert Rotation(1, 2, 3) != Rotation(1, 2)

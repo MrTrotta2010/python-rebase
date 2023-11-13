@@ -35,3 +35,8 @@ class Rotation:
         """Converts a Rotation to a list"""
 
         return [self.x, self.y, self.z]
+
+    def to_tuple(self):
+        """Converts a Rotation to a tuple"""
+
+        return (self.x, self.y, self.z)
