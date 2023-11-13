@@ -25,12 +25,13 @@ def is_valid_str(value) -> bool:
 def is_valid_number(value) -> bool:
     """Checks wether a given number is valid"""
 
-    return isinstance(value, (int, float))
+    return type(value) in (int, float)
 
 def is_valid_id(value) -> bool:
     """Checks wether a given id is valid"""
 
-    return (is_valid_str(value) and value != '') or (is_valid_number(value) and value > 0)
+    # pylint: disable=unidiomatic-typecheck
+    return (is_valid_str(value) and value != '') or (type(value) == int and value > 0)
 
 def is_valid_movement_field(field: str, value: any) -> bool:
     """Checks wether a given field-value pair is valid for a Movement object"""
@@ -65,7 +66,7 @@ def is_valid_session_field(field: str, value: any) -> bool:
         return isinstance(value, list)
     return False
 
-def exclude_keys_from_dict(dictionary: dict, keys: list):
+def exclude_keys_from_dict(dictionary: dict, keys: list) -> None:
     """Excludes a given list of keys from a dictionary"""
 
     if keys is not None:
