@@ -27,9 +27,9 @@ class TestRotation:
         assert str(rotation) == '[1, 2, 3]'
         assert str(rotation2) == '[1, 2.5, 0]'
 
-    def test_to_array(self):
+    def test_to_list(self):
         rotation = Rotation(1, 2, 3)
-        assert rotation.to_array() == [1, 2, 3]
+        assert rotation.to_list() == [1, 2, 3]
 
     def test_eq(self):
         assert Rotation(1, 2, 3) == Rotation(1, 2, 3)

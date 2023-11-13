@@ -31,7 +31,7 @@ class Rotation:
     def __str__(self):
         return f'[{round(self.x, 4)}, {round(self.y, 4)}, {round(self.z, 4)}]'
 
-    def to_array(self):
-        """Converts a Rotation to an array"""
+    def to_list(self):
+        """Converts a Rotation to a list"""
 
         return [self.x, self.y, self.z]

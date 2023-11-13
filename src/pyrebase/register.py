@@ -51,7 +51,7 @@ class Register:
     def to_dict(self) -> dict:
         """Converts the Register to a dictionary"""
 
-        return { art: value.to_array() for art, value in self._articulations.items() }
+        return { art: value.to_list() for art, value in self._articulations.items() }
 
     def __get_articulation_count(self) -> int:
         return len(self._articulations)
