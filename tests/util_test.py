@@ -1,6 +1,6 @@
 # pylint: disable=missing-module-docstring, missing-class-docstring, missing-function-docstring
 
-import src.python_rebase.util as util
+from src.python_rebase import util
 
 class TestUtil:
     def test_is_valid_str(self):
