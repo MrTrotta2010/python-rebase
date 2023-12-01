@@ -30,7 +30,7 @@ Este projeto é uma API escrita em Python para comunicação com o ReBase, um ba
     - [Erros](#erros)
 
 ## Visão Geral
-O pacote Python ReBase contém classes-modelo para Sessões e Movimentos. A classe `api_response` modela de forma generalizada as respostas enviadas pelo `ReBase REST Server (RRS)`. O módulo `rebase_client` é responsável pelo envio de requisições ao RRS. Estão inclusas também algumas exceções personalizadas e funções utilitárias. Todos os módulos se encontram na pasta `src/python_rebase`.
+O pacote Python ReBase contém classes-modelo para Sessões e Movimentos. A classe `api_response` modela de forma generalizada as respostas enviadas pelo `ReBaseRS`. O módulo `rebase_client` é responsável pelo envio de requisições ao ReBaseRS. Estão inclusas também algumas exceções personalizadas e funções utilitárias. Todos os módulos se encontram na pasta `src/python_rebase`.
 
 ### Sobre o ReBase
 O ReBase, do inglês *Rehabilitation Database*, é um baco de dados dedicado ao armazenamento de movimentos corporais, com foco em reabilitação neurofuncional e neuromotora. Apesar do enfoque, o ReBase é capaz de armazenar qualquer tipo de movimento corporal gravado por qualquer técnica de captura de movimentos, desde que siga o padrão definido. Para isto serve a API Python ReBase!
@@ -180,7 +180,7 @@ Estes filtros podem ser úteis em alguns casos específicos. Um exemplo de uso: 
 Vale notar, por fim, que todos os filtros são **aditivos**, ou seja, ao utilizar `n` múltiplos filtros, serão retornados os documentos que satisfaçam **todos** os filtros, ou seja, os documentos que satisfaçam o filtro 1 **E** o filtro 2 **E** ... **E** o filtro n. 
 
 ### Paginação
-As requisições de listagem, tanto de Movimentos quanto de Sessões, também suportam paginação. Utilizando paginação, elimina-se a necessidade de carregar todos os items de uma listagem de uma só vez, o que pode significar um ganho de velocidade e desempenho para uma aplicação. O RRS suporta dois tipos de paginação: baseada em **per e page** e baseada em **IDs**.
+As requisições de listagem, tanto de Movimentos quanto de Sessões, também suportam paginação. Utilizando paginação, elimina-se a necessidade de carregar todos os items de uma listagem de uma só vez, o que pode significar um ganho de velocidade e desempenho para uma aplicação. O ReBaseRS suporta dois tipos de paginação: baseada em **per e page** e baseada em **IDs**.
 
 O primeiro tipo utiliza dois parâmetros: `per`, que representa a quantidade de itens presentes em cada página, e `page`, que representa qual página deve ser carregada. Desta forma, supondo que quiséssemos carregar 10 elementos por página, para carregar a primeira página usaríamos `{ per: 10, page: 1 }` e receberíamos os primeiros 10 itens da lista. Para carregar a segunda página usaríamos `{ per: 10, page: 2 }` e receberíamos os 10 itens seguintes e assim por diante. Este método é simples de se utilizar e de se entender e permite o carregamento de qualquer página, porém possui uma desvantagem: para recuperar uma página `n`, é necessário recuperar todas as páginas anteriores, o que faz com que as requisições fiquem mais lentas conforme o número `n` da página cresce. Para mitigar este problema, é possível utilizar a paginação baseada em IDs.
 
@@ -197,13 +197,13 @@ A seguir, estão incluídas tabelas e descrições detalhando todas as classes e
 ### Módulos
 
 #### rebase_client
-Este módulo é responsável por toda a comunicação com o RRS. Seus métodos retornam objetos da classe [APIResponse](#apiresponse). Exemplos de uso podem ser encontrados na seção [Quick Start:](#quick-start). 
+Este módulo é responsável por toda a comunicação com o ReBaseRS. Seus métodos retornam objetos da classe [APIResponse](#apiresponse). Exemplos de uso podem ser encontrados na seção [Quick Start:](#quick-start). 
 
 **Métodos:**
 | Método              | Retorno                         | Parâmetros                           |
 | :------------------ | :------------------------------ | -----------------------------------: |
 | **fetch_movements** | **[APIResponse](#apiresponse)** |**professional_id: str = "", patient_id: str = "", movementLabel: str = "", articulations: list = None, legacy: bool = False, page: int = 0, per: int = 0, previous_id: str = ""** |
-| Recupera uma lista de Movimentos armazenados no RRS. Suporta diversos filtros e paginação    |
+| Recupera uma lista de Movimentos armazenados no ReBaseRS. Suporta diversos filtros e paginação |
 | **find_movement**   | **[APIResponse](#apiresponse)** | **id: str, legacy: bool = False**    |
 | Recupera um Movimento específico a partir do ID. O parâmetro `legacy`, se `True`, retorna o Movimento no formato antigo do ReBase |
 | **insert_movement**  | **[APIResponse](#apiresponse)** | **movement: [Movement](#movement)** |
@@ -213,7 +213,7 @@ Este módulo é responsável por toda a comunicação com o RRS. Seus métodos r
 | **delete_movement** | **[APIResponse](#apiresponse)** | **id: str**                          |
 | Exclui um Movimento do ReBase                                                                |
 | **fetch_sessions**  | **[APIResponse](#apiresponse)** | **professional_id: str = "", patient_id: str = "", movement_label: str = "", articulations: list = None, legacy: bool = False, page: int = 0, per: int = 0, previous_id: str = ""** |
-| Recupera uma lista de Sessões armazenadas no RRS. Suporta diversos filtros e paginação       |
+| Recupera uma lista de Sessões armazenadas no ReBaseRS. Suporta diversos filtros e paginação       |
 | **find_session**    | **[APIResponse](#apiresponse)** | **id: str, legacy: bool = False**    |
 | Recupera uma Sessão específica a partir do ID. O parâmetro `legacy`, se `True`, retorna a Sessão no formato antigo do ReBase |
 | **insert_session**  | **[APIResponse](#apiresponse)** | **session: [Session](#session)**     |
@@ -245,7 +245,7 @@ O módulo `util` contém diversos métodos utilitários.
 ### Modelos
 
 #### APIResponse
-A classe APIResponse modela uma resposta generalizada do servidor RRS.
+A classe APIResponse modela uma resposta generalizada do servidor ReBaseRS.
 
 **Atributos:**
 | Atributo          | Tipo                   |
@@ -421,5 +421,5 @@ Modela uma Sessão do ReBase.
 A biblioteca Python ReBase define alguns erros personalizados para os modelos de dados e casos de uso do ReBase. São eles:
 
 1. **MismatchedArticulationsError:** disparado ao criar um Movimento com Registros que tenham articulações diferentes das definidas no Movimento ou ao adicionar a um Movimento um Registro que tenha articulações diferentes das do Movimento;
-2. **MissingAttributeError:** disparado ao tentar enviar uma requisição ao RRS e algum parâmetro não tenha um atributo obrigatório;
+2. **MissingAttributeError:** disparado ao tentar enviar uma requisição ao ReBaseRS e algum parâmetro não tenha um atributo obrigatório;
 3. **RepeatedArticulationError:** disparado ao criar um Movimento ou um Registro com uma lista de articulações que contenha articulações repetidas.
