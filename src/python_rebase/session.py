@@ -78,7 +78,7 @@ class Session:
 
     duration = property(__get_duration)
 
-    def to_dict(self, exclude: list = None, movement_exclude: list = None) -> dict:
+    def to_dict(self, exclude: list = None, movement_exclude: list = None) -> dict: # pylint: disable=too-many-statements
         """Converts the Session to a dictionary. Receives a list of attributes to be ignored
         for the Session and a list of attributes to be ignored for it's Movements"""
 
