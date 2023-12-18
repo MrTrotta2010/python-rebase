@@ -1,5 +1,6 @@
 # pylint: disable=missing-module-docstring, missing-class-docstring, missing-function-docstring
 
+from json import loads
 import pytest
 
 from src.python_rebase.session import Session
@@ -56,6 +57,17 @@ class TestSession:
         assert len(session.movements) == 2
         assert isinstance(session.movements[0], Movement)
         assert isinstance(session.movements[1], Movement)
+
+    def test_movement_ids(self):
+        m_id = '653c48356453a7a8b23b9b9d'
+        session = Session({ 'title': 'Test', 'id': 1, 'movementIds': [m_id] })
+
+        assert len(session.movements) == 0
+        assert len(session.movement_ids) == 1
+        assert session.movement_ids[0] == m_id
+        assert str(session) == "{'id': 1, 'title': 'Test', 'movementIds': ['653c48356453a7a8b23b9b9d']}"
+        assert 'movementIds' not in loads(session.to_json(update=True))
+        assert 'movementIds' not in loads(session.to_json(update=False))
 
     def test_init_with_objects(self):
         session1 = Session({

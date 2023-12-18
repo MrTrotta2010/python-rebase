@@ -27,7 +27,7 @@ FIELDS = { 'id': None, '_id': None, 'title': None, 'description': None, 'profess
             'patientId': None, 'patientAge': None, 'patientHeight': None, 'patientWeight': None,
             'mainComplaint': None, 'historyOfCurrentDisease': None, 'historyOfPastDisease': None,
             'diagnosis': None, 'relatedDiseases': None, 'medications': None,
-            'physicalEvaluation': None, 'numberOfMovements': None, 'movements': None,
+            'physicalEvaluation': None, 'numberOfMovements': None, 'movements': None, 'movementIds': None,
             'patient': {
                 'id': None, 'age': None, 'height': None, 'weight': None
             },
@@ -67,6 +67,7 @@ class Session:
         self.physical_evaluation = properties_dict.get('physicalEvaluation') or properties_dict.get('medicalData', {}).get('physicalEvaluation')
 
         self.movements = self.__force_movements(properties_dict['movements']) if 'movements' in properties_dict else []
+        self.movement_ids = properties_dict['movementIds'] if 'movementIds' in properties_dict else []
         self.number_of_movements = properties_dict.get('numberOfMovements')
 
     def __get_duration(self):
@@ -110,6 +111,7 @@ class Session:
         if self.number_of_movements is not None: dictionary['numberOfMovements'] = self.number_of_movements
         if self.movements is not None and len(self.movements) > 0:
             dictionary['movements'] = [movement.to_dict(exclude=movement_exclude) for movement in self.movements]
+        if self.movement_ids is not None and len(self.movement_ids) > 0: dictionary['movementIds'] = self.movement_ids
 
         exclude_keys_from_dict(dictionary, exclude)
 
@@ -119,7 +121,7 @@ class Session:
         """Converts the Session to a json as expected by the ReBase Server.
         Receives a boolean that indicates wether the json will be used for an update"""
 
-        exclude = ['id', 'insertionDate', 'updateDate']
+        exclude = ['id', 'insertionDate', 'updateDate', 'movementIds']
         movement_exclude = ['id', 'insertionDate', 'updateDate', 'professionalId', 'patientId',
                             'articulations']
         if update:

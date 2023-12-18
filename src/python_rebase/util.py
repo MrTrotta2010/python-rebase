@@ -62,7 +62,7 @@ def is_valid_session_field(field: str, value: any) -> bool:
     if field in ['patientSessionNumber', 'patientAge', 'patientHeight', 'patientWeight',
                  'numberOfMovements', 'patient.age', 'patient.height', 'patient.weight']:
         return is_valid_number(value)
-    if field == 'movements':
+    if field in ['movements', 'movementIds']:
         return isinstance(value, list)
     return False
 
