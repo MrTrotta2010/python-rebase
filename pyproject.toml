@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "python-rebase"
-version = "0.2.0"
+version = "0.2.1"
 authors = [
   { name="Tiago Trotta", email="mrtrotta2010@gmail.com" },
 ]
@@ -26,4 +26,4 @@ dependencies = ["requests"]
 
 [project.urls]
 "Repository" = "https://github.com/MrTrotta2010/python-rebase"
-"Changelog" = "https://github.com/MrTrotta2010/python-rebase/blob/9a09dfb739882621c75caddb9e60ff9ec97e1d34/CHANGELOG.md"
+"Changelog" = "https://github.com/MrTrotta2010/python-rebase/blob/main/CHANGELOG.md"

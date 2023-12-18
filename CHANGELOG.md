@@ -5,6 +5,11 @@ Todas as mudanças notáveis deste projeto serão documentadas neste arquivo.
 Este formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2023-12-18
+
+### Corrigido
+- Link do changelog na página do pacote no PyPi.
+
 ## [0.2.0] - 2023-12-18
 
 ### Adicionado
