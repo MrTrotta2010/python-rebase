@@ -303,8 +303,8 @@ Modela um Movimento do ReBase.
 | ID da Sessão à qual o Movimento pertence              |
 | **professional_id**     | **str**                     |
 | Identificação do profissional da saúde responsável pela captura do Movimento |
-| **app_code**            | **str**                     |
-| Código da aplicação que gerou o Movimento. Um código arbitrário definido pelos desenvolvedores da aplicação |
+| **app_code**            | **int**                     |
+| Código da aplicação que gerou o Movimento. Um inteiro positivo, maior que zero, arbitrário definido pelos desenvolvedores da aplicação |
 | **app_data**            | **str**                     |
 | Dados arbitrários utilizados pela aplicação que gerou o Movimento. Pode ser utilizado pelos usuários da API para armazenar dados no formato que quiserem, como um json ou uma string |
 | **patient_id**          | **str**                     |
