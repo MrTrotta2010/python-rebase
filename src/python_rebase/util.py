@@ -17,6 +17,8 @@
 # You should have received a copy of the GNU General Public License
 # along with PyReBase.  If not, see <https://www.gnu.org/licenses/>
 
+from typing import Callable
+
 def is_valid_str(value) -> bool:
     """Checks wether a given string is valid"""
 
@@ -73,3 +75,28 @@ def exclude_keys_from_dict(dictionary: dict, keys: list) -> None:
         for key in keys:
             if key in dictionary:
                 del dictionary[key]
+
+def validate_initialization_dict(validation_function: Callable[[str, any], bool],
+                                 resource_name: str, field_rules: dict, dictionary: dict) -> None:
+    """Validates a dictionary used to initialize a resource"""
+
+    for key in dictionary.keys():
+        if key not in field_rules:
+            raise ValueError(f"Invalid attribute in {resource_name} object: '{key}'")
+
+        if field_rules[key] is None:
+            value = dictionary[key]
+            if not validation_function(key, value):
+                raise ValueError(f"Inappropriate value for attribute '{key}' in {resource_name} object: {type(value)} {value}")
+
+        else:
+            if not isinstance(dictionary[key], dict):
+                raise ValueError(f"Inappropriate value for attribute '{key}' in {resource_name} object: {type(dictionary[key])} {dictionary[key]}")
+
+            for sub_key in dictionary[key].keys():
+                if sub_key not in field_rules[key]:
+                    raise ValueError(f"Invalid attribute in {resource_name} object: '{key}.{sub_key}'")
+
+                value = dictionary[key][sub_key]
+                if not validation_function(f'{key}.{sub_key}', value):
+                    raise ValueError(f"Inappropriate value for attribute '{key}.{sub_key}' in {resource_name} object: {type(value)} {value}")

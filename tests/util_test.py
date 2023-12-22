@@ -1,6 +1,10 @@
 # pylint: disable=missing-module-docstring, missing-class-docstring, missing-function-docstring
 
+import pytest
+
 from src.python_rebase import util
+from src.python_rebase.session import Session
+from src.python_rebase.movement import Movement
 
 class TestUtil:
     def test_is_valid_str(self):
@@ -46,5 +50,12 @@ class TestUtil:
         dictionary = { 'a': 1, 'b': 2, 'c': 3 }
         util.exclude_keys_from_dict(dictionary, ['a', 'b'])
         assert dictionary == { 'c': 3 }
+
+    def test_validate_initialization_dict(self):
+        with pytest.raises(ValueError):
+            Movement({ 'invalid': { 'object': 'value' }})
+
+        with pytest.raises(ValueError):
+            Session({ 'invalid': { 'object': 'value' }})
 
 # pylint: enable=missing-module-docstring, missing-class-docstring, missing-function-docstring

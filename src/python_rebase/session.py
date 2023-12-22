@@ -20,7 +20,7 @@
 from json import dumps
 
 from .movement import Movement
-from .util import is_valid_session_field, exclude_keys_from_dict
+from .util import is_valid_session_field, exclude_keys_from_dict, validate_initialization_dict
 
 FIELDS = { 'id': None, '_id': None, 'title': None, 'description': None, 'professionalId': None,
             'patientSessionNumber': None, 'insertionDate': None, 'updateDate': None,
@@ -135,26 +135,7 @@ class Session:
         return str(self.to_dict())
 
     def __validate_session_dict(self, dictionary: dict) -> None:
-        for key in dictionary.keys():
-            if key not in FIELDS:
-                raise ValueError(f"Invalid attribute in Session object: '{key}'")
-
-            if FIELDS[key] is None:
-                value = dictionary[key]
-                if not is_valid_session_field(key, value):
-                    raise ValueError(f"Inappropriate value for attribute '{key}' in Session object: {type(value)} {value}")
-
-            else:
-                if not isinstance(dictionary[key], dict):
-                    raise ValueError(f"Inappropriate value for attribute '{key}' in Session object: {type(dictionary[key])} {dictionary[key]}")
-
-                for sub_key in dictionary[key].keys():
-                    if sub_key not in FIELDS[key]:
-                        raise ValueError(f"Invalid attribute in Session object: '{key}.{sub_key}'")
-
-                    value = dictionary[key][sub_key]
-                    if not is_valid_session_field(f'{key}.{sub_key}', value):
-                        raise ValueError(f"Inappropriate value for attribute '{key}.{sub_key}' in Session object: {type(value)} {value}")
+        validate_initialization_dict(is_valid_session_field, 'Session', FIELDS, dictionary)
 
     def __force_movements(self, data: list) -> list:
         return [m if isinstance(m, Movement) else Movement(m) for m in data]

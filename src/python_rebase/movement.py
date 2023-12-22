@@ -20,7 +20,7 @@
 from json import dumps
 
 from .register import Register
-from .util import is_valid_movement_field, exclude_keys_from_dict
+from .util import is_valid_movement_field, exclude_keys_from_dict, validate_initialization_dict
 from .mismatched_articulations_error import MismatchedArticulationsError
 
 FIELDS = { 'id': None, '_id': None, 'label': None, 'description': None, 'device': None,
@@ -160,23 +160,4 @@ class Movement:
         return True
 
     def __validate_movement_dict(self, dictionary: dict) -> None:
-        for key in dictionary.keys():
-            if key not in FIELDS:
-                raise ValueError(f"Invalid attribute in Session object: '{key}'")
-
-            if FIELDS[key] is None:
-                value = dictionary[key]
-                if not is_valid_movement_field(key, value):
-                    raise ValueError(f"Inappropriate value for attribute '{key}' in Movement object: {type(value)} {value}")
-
-            else:
-                if not isinstance(dictionary[key], dict):
-                    raise ValueError(f"Inappropriate value for attribute '{key}' in Movement object: {type(dictionary[key])} {dictionary[key]}")
-
-                for sub_key in dictionary[key].keys():
-                    if sub_key not in FIELDS[key]:
-                        raise ValueError(f"Invalid attribute in Movement object: '{key}.{sub_key}'")
-
-                    value = dictionary[key][sub_key]
-                    if not is_valid_movement_field(f'{key}.{sub_key}', value):
-                        raise ValueError(f"Inappropriate value for attribute '{key}.{sub_key}' in Movement object: {type(value)} {value}")
+        validate_initialization_dict(is_valid_movement_field, 'Movement', FIELDS, dictionary)
