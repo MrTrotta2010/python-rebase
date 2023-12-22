@@ -23,9 +23,11 @@ from .register import Register
 from .util import is_valid_movement_field, exclude_keys_from_dict
 from .mismatched_articulations_error import MismatchedArticulationsError
 
-FIELDS = ['id', '_id', 'label', 'description', 'device', 'articulations', 'fps',
-          'duration', 'numberOfRegisters', 'insertionDate', 'updateDate', 'sessionId',
-          'professionalId', 'patientId', 'appCode', 'appData', 'registers']
+FIELDS = { 'id': None, '_id': None, 'label': None, 'description': None, 'device': None,
+          'articulations': None, 'fps': None, 'duration': None, 'numberOfRegisters': None,
+          'insertionDate': None, 'updateDate': None, 'sessionId': None, 'professionalId': None,
+          'patientId': None, 'appCode': None, 'appData': None, 'registers': None,
+          'app': { 'code': None, 'data': None } }
 
 class Movement:
     """Represents a ReBase Movement"""
@@ -47,8 +49,8 @@ class Movement:
         self.session_id = properties_dict.get('sessionId')
         self.professional_id = properties_dict.get('professionalId')
         self.patient_id = properties_dict.get('patientId')
-        self.app_code = properties_dict.get('appCode')
-        self.app_data = properties_dict.get('appData')
+        self.app_code = properties_dict.get('appCode') or properties_dict.get('app', {}).get('code')
+        self.app_data = properties_dict.get('appData') or properties_dict.get('app', {}).get('data')
 
         if 'registers' in properties_dict:
             self._registers = self.__force_registers(properties_dict['registers'])
@@ -160,8 +162,21 @@ class Movement:
     def __validate_movement_dict(self, dictionary: dict) -> None:
         for key in dictionary.keys():
             if key not in FIELDS:
-                raise ValueError(f"Invalid attribute in Movement object: '{key}'")
+                raise ValueError(f"Invalid attribute in Session object: '{key}'")
 
-            value = dictionary[key]
-            if not is_valid_movement_field(key, value):
-                raise ValueError(f"Inappropriate value for attribute '{key}' in Movement object: {type(value)} {value}")
+            if FIELDS[key] is None:
+                value = dictionary[key]
+                if not is_valid_movement_field(key, value):
+                    raise ValueError(f"Inappropriate value for attribute '{key}' in Movement object: {type(value)} {value}")
+
+            else:
+                if not isinstance(dictionary[key], dict):
+                    raise ValueError(f"Inappropriate value for attribute '{key}' in Movement object: {type(dictionary[key])} {dictionary[key]}")
+
+                for sub_key in dictionary[key].keys():
+                    if sub_key not in FIELDS[key]:
+                        raise ValueError(f"Invalid attribute in Movement object: '{key}.{sub_key}'")
+
+                    value = dictionary[key][sub_key]
+                    if not is_valid_movement_field(f'{key}.{sub_key}', value):
+                        raise ValueError(f"Inappropriate value for attribute '{key}.{sub_key}' in Movement object: {type(value)} {value}")

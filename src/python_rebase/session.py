@@ -27,7 +27,8 @@ FIELDS = { 'id': None, '_id': None, 'title': None, 'description': None, 'profess
             'patientId': None, 'patientAge': None, 'patientHeight': None, 'patientWeight': None,
             'mainComplaint': None, 'historyOfCurrentDisease': None, 'historyOfPastDisease': None,
             'diagnosis': None, 'relatedDiseases': None, 'medications': None,
-            'physicalEvaluation': None, 'numberOfMovements': None, 'movements': None, 'movementIds': None,
+            'physicalEvaluation': None, 'numberOfMovements': None, 'movements': None,
+            'movementIds': None,
             'patient': {
                 'id': None, 'age': None, 'height': None, 'weight': None
             },

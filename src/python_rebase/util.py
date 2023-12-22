@@ -36,7 +36,7 @@ def is_valid_id(value) -> bool:
 def is_valid_movement_field(field: str, value: any) -> bool:
     """Checks wether a given field-value pair is valid for a Movement object"""
 
-    if field in ['id', '_id', 'sessionId', 'professionalId', 'patientId', 'appCode']:
+    if field in ['id', '_id', 'sessionId', 'professionalId', 'patientId', 'appCode', 'app.code']:
         return is_valid_id(value)
     if field in ['label', 'description', 'device', 'insertionDate', 'updateDate']:
         return is_valid_str(value)
@@ -44,7 +44,7 @@ def is_valid_movement_field(field: str, value: any) -> bool:
         return is_valid_number(value)
     if field in ['articulations', 'registers']:
         return isinstance(value, list)
-    return field == 'appData'
+    return field in ['appData', 'app.data']
 
 def is_valid_session_field(field: str, value: any) -> bool:
     """Checks wether a given field-value pair is valid for a Session object"""

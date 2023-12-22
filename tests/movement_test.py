@@ -8,11 +8,14 @@ from src.python_rebase.mismatched_articulations_error import MismatchedArticulat
 
 class TestMovement:
     def test_init(self):
-        movement = Movement({ 'id': 1, 'label': 'test', 'device': 'py' })
+        movement = Movement({ 'id': 1, 'label': 'test', 'device': 'py', 'appData': 'Hi!', 'appCode': 777 })
+        movement2 = Movement({ 'id': 2, 'app': { 'data': 'Hi!', 'code': 777 } })
 
         assert movement.id == 1
         assert movement.label == 'test'
         assert movement.device == 'py'
+        assert movement.app_data == movement2.app_data == 'Hi!'
+        assert movement.app_code == movement2.app_code == 777
 
     def test_init_error(self):
         with pytest.raises(ValueError):
