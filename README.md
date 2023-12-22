@@ -227,20 +227,22 @@ Este módulo é responsável por toda a comunicação com o ReBaseRS. Seus méto
 O módulo `util` contém diversos métodos utilitários. 
 
 **Métodos:**
-| Método                      | Retorno  | Parâmetros                       |
-| :-------------------------- | :------- | -------------------------------: |
-| **is_valid_str**            | **bool** | **value: any**                   |
+| Método                           | Retorno  | Parâmetros                       |
+| :------------------------------- | :------- | -------------------------------: |
+| **is_valid_str**                 | **bool** | **value: any**                   |
 | Retorna `True` se `value` for uma string válida (uma instância da classe `str`). Caso contrário, retorna `False` |
-| **is_valid_number**         | **bool** | **value: any**                   |
+| **is_valid_number**              | **bool** | **value: any**                   |
 | Retorna `True` se `value` for um número válido (uma instância da classe `int` ou da classe `float`). Caso contrário, retorna `False` |
-| **is_valid_id**             | **bool** | **value: any**                   |
+| **is_valid_id**                  | **bool** | **value: any**                   |
 | Retorna `True` se `value` for considerado um id válido para o ReBase (uma string válida não vazia ou um inteiro maior que 0). Caso contrário, retorna `False` |
-| **is_valid_movement_field** | **bool** | **field: str, value: any**       |
+| **is_valid_movement_field**      | **bool** | **field: str, value: any**       |
 | Retorna `True` se `field` for um campo válido para um Movimento do ReBase e se `value` for um valor válido para esse campo. Retorna `False` caso contrário |
-| **is_valid_session_field**  | **bool** | **field: str, value: any**       |
+| **is_valid_session_field**       | **bool** | **field: str, value: any**       |
 | Retorna `True` se `field` for um campo válido para um Movimento do ReBase e se `value` for um valor válido para esse campo. Retorna `False` caso contrário |
-| **exclude_keys_from_dict**  | **None** | **dictionary: dict, keys: list** |
-| Remove uma dada lista de chaves de um dado dicionário                     |
+| **exclude_keys_from_dict**       | **None** | **dictionary: dict, keys: list** |
+| Remove uma dada lista de chaves de um dado dicionário                          |
+| **validate_initialization_dict** | **None** | **validation_function: Callable[[str, any], bool], resource_name: str, field_rules: dict, dictionary: dict** |
+| Valida um dicionário de inicialização `dictionary` com base nos campos definidos em `field_rules` utilizando a função de validação `validation_function`. Caso encontre algum campo inválido, lança um `ValueError` cuja mensagem contém o nome apropriado do recurso `resource_name` |
 
 ### Modelos
 
