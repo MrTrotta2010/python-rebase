@@ -26,11 +26,14 @@ class TestMovement:
 
     def test_init_with_data(self):
         with pytest.raises(MismatchedArticulationsError):
-            movement = Movement({ 'registers': [{ 'a1': [1, 2, 3] }] })
+            movement = Movement({ 'articulations': ['a2'], 'registers': [{ 'a1': [1, 2, 3] }] })
 
-        movement = Movement({ 'articulations': ['a1'], 'registers': [{ 'a1': [1, 2, 3] }] })
+        movement = Movement({ 'registers': [{ 'a1': [1, 2, 3] }] })
+        movement2 = Movement({ 'registers': [{ 'a1': [1, 2, 3] }, { 'a1': [2, 3, 4] }] })
 
         assert len(movement.registers) == 1
+        assert len(movement2.registers) == 2
+        assert movement.articulations == ['a1']
         assert movement.registers[0] == Register({ 'a1': [1, 2, 3] })
 
     def test_registers(self):

@@ -130,8 +130,11 @@ class Movement:
         array = []
         for register in data:
             r = register if isinstance(register, Register) else Register(register)
-        self.__validate_articulations(r.articulations)
-        array.append(r)
+            if self.articulations is None:
+                self.articulations = r.articulations
+            else:
+                self.__validate_articulations(r.articulations)
+            array.append(r)
 
         return array
 

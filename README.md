@@ -1,8 +1,8 @@
-# Python ReBase [0.2.2]
+# Python ReBase [0.2.3]
 Este projeto é uma API escrita em Python para comunicação com o ReBase, um banco de dados de sessões de reabilitação física.
 
 ## Índice
-- [Python ReBase \[0.2.2\]](#python-rebase-022)
+- [Python ReBase \[0.2.3\]](#python-rebase-023)
   - [Índice](#índice)
   - [Visão Geral](#visão-geral)
     - [Sobre o ReBase](#sobre-o-rebase)
