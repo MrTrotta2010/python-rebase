@@ -90,21 +90,21 @@ class ReBaseClient:
 
         return self.__send_request(_Method.DELETE, _Resource.MOVEMENT, APIResponse.ResponseType.DELETE_MOVEMENT, movement_id)
 
-    def fetch_sessions(self, professional_id: str = "", patient_id: str = "", movement_label: str = "", articulations: list = None, legacy: bool = False, page: int = 0, per: int = 0, previous_id: str = '') -> APIResponse:
+    def fetch_sessions(self, professional_id: str = "", patient_id: str = "", movement_label: str = "", articulations: list = None, legacy: bool = False, deep: bool = False, page: int = 0, per: int = 0, previous_id: str = '') -> APIResponse:
         """Gets a list of Sessions. Can be filtered by professional_id and patient_id.
         The Sessions' Movements can be filtered by movement_label and articulations.
         Supports pagination. Use the legacy parameter to retrieve the Sessions
         in the old ReBase format"""
 
-        return self.__send_request(_Method.GET, _Resource.SESSION, APIResponse.ResponseType.FETCH_SESSIONS, params=self.__format_params(professionalId=professional_id, patientId=patient_id, movementLabel=movement_label, articulations=articulations, page=page, per=per, previousId=previous_id, legacy=legacy))
+        return self.__send_request(_Method.GET, _Resource.SESSION, APIResponse.ResponseType.FETCH_SESSIONS, params=self.__format_params(professionalId=professional_id, patientId=patient_id, movementLabel=movement_label, articulations=articulations, page=page, per=per, previousId=previous_id, legacy=legacy, deep=deep))
 
-    def find_session(self, session_id: str, legacy: bool = False) -> APIResponse:
+    def find_session(self, session_id: str, legacy: bool = False, deep: bool = False) -> APIResponse:
         """Finds a specific Session by ID"""
 
         if (session_id is None or session_id == ''):
             raise MissingAttributeError('session id')
 
-        return self.__send_request(_Method.GET, _Resource.SESSION, APIResponse.ResponseType.FIND_SESSION, session_id, self.__format_params(legacy=legacy))
+        return self.__send_request(_Method.GET, _Resource.SESSION, APIResponse.ResponseType.FIND_SESSION, session_id, self.__format_params(legacy=legacy, deep=deep))
 
     def insert_session(self, session: Session) -> APIResponse:
         """Creates a new Session"""

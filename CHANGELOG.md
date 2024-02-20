@@ -7,6 +7,9 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.
 
 ## [0.3.0] - 2024-02-20
 
+### Corrigido
+- Foi adicionado o suporte ao parâmetro `deep` nas requisições `fetch_sessions` e `find_session`.
+
 ### Alterado
 - A partir deste update, **qualquer usuário que quiser acessar o ReBase precisa ter um token de autenticação cadastrado no sistema**. Para receber um token, o usuário deve entrar em contato com o time de desenvolvimento através dos emails `mrtrotta2010@gmail.com` ou `diegocolombodias@gmail.com` e enviar o endereço de email que deseja cadastrar;
 - O módulo `rebase_client` foi transformado na classe `ReBaseClient`. A classe ainda desempenha o mesmo papel, porém agora é necessário inicializá-la passando o email e o token cadastrados do usuário;
