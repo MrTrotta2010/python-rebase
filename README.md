@@ -38,7 +38,7 @@ O ReBase, do inglês *Rehabilitation Database*, é um baco de dados dedicado ao 
 Os **Movimentos** do ReBase representam os movimentos corporais capturados e são compostos por metadados, uma lista de *Articulações* e uma lista de **Registros**, que representam as rotações em X, y e z da Articulação a cada instante do Movimento. Os Movimentos podem pertencer a **Sessões**. Cada Sessão também contem metadados e pode conter múltiplos movimentos.
 
 ## Instalação
-O PyRebase pode ser instalado pelo terminal através do **PyPi** com os comandos:
+O Python ReBase pode ser instalado pelo terminal através do **PyPi** com os comandos:
 ```
 pip3 install python-rebase
 ```
