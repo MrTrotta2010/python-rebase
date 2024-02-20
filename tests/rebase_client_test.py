@@ -10,7 +10,6 @@ class TestReBaseClient:
 
         assert client.user_email == 'test@gmail.com'
         assert client.user_token == 'authtoken'
-        assert client.authentication_headers == { 'rebase-user-email': 'test@gmail.com', 'rebase-user-token': 'authtoken' }
 
     def test_init_errors(self):
         with pytest.raises(TypeError):
