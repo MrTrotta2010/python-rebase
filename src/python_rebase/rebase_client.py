@@ -52,7 +52,7 @@ class ReBaseClient:
     def __get_headers(self):
         return { 'rebase-user-email': self.user_email, 'rebase-user-token': self.user_token }
 
-    authentication_headers = property(fget=__get_headers, doc='The authentication headers used in the requests')
+    _authentication_headers = property(fget=__get_headers, doc='The authentication headers used in the requests')
 
     def fetch_movements(self, professional_id: str = '', patient_id: str = '', movement_label: str = '', articulations: list = None, legacy: bool = False, page: int = 0, per: int = 0, previous_id: str = '') -> APIResponse:
         """Gets a list of Movements. Can be filtered by professional_id, patient_id, movement_label
@@ -134,13 +134,13 @@ class ReBaseClient:
 
         try:
             if method == _Method.GET:
-                response = requests.get(url, headers=self.authentication_headers, params=params, timeout=30)
+                response = requests.get(url, headers=self._authentication_headers, params=params, timeout=30)
             elif method == _Method.POST:
-                response = requests.post(url, headers={ 'Content-Type': 'application/json', **self.authentication_headers }, params=params, data=data, timeout=30)
+                response = requests.post(url, headers={ 'Content-Type': 'application/json', **self._authentication_headers }, params=params, data=data, timeout=30)
             elif method == _Method.PUT:
-                response = requests.put(url, headers={ 'Content-Type': 'application/json', **self.authentication_headers }, params=params, data=data, timeout=30)
+                response = requests.put(url, headers={ 'Content-Type': 'application/json', **self._authentication_headers }, params=params, data=data, timeout=30)
             elif method == _Method.DELETE:
-                response = requests.delete(url, headers=self.authentication_headers, params=params, timeout=30)
+                response = requests.delete(url, headers=self._authentication_headers, params=params, timeout=30)
         except requests.exceptions.RequestException as e:
             return self.__new_api_error_response(str(e))
 
