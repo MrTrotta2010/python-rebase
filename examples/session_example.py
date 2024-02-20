@@ -1,10 +1,12 @@
 """Module that provides usage examples of the Session class"""
 import sys
-from src.python_rebase import rebase_client
+from src.python_rebase.rebase_client import ReBaseClient
 from src.python_rebase.session import Session
 from src.python_rebase.movement import Movement
 
 sys.path.append('..')
+
+rebase_client = ReBaseClient('your@email.com', 'your_token')
 
 session = Session({
 	'title': 'NewAPITest',
@@ -33,14 +35,21 @@ print(f'Inserted: {response}', '\n')
 if not response.has_data('movement'):
     sys.exit(2)
 
-print('> If we search for the Session, it will come with a Movement')
-response = rebase_client.find_session(session_id)
-print(f'Found? {response}', '\n')
+print("> If we search for the Session with the 'deep' parameter, it will come with a Movement")
+response = rebase_client.find_session(session_id=session_id, deep=True)
+print(f'Found? {response}')
 if not response.has_data('session'):
     sys.exit(3)
 
-print("> Now, let's delete both")
 movement_id = response.get_data('session').movements[0].id
+print("> The Movement's id is", response.get_data('session').movements[0].id, '\n')
+
+print("> If we search for the Session without the 'deep' parameter, it will come only with the Movement's id")
+response = rebase_client.find_session(session_id=session_id)
+print(f'Found? {response}')
+print('> You will see that the id we have received now is the same as the one we had received earlier:', response.get_data('session').movement_ids[0], '\n')
+
+print("> Now, let's delete both the Session and it's Movement")
 response = rebase_client.delete_session(session_id)
 print(f'Deleted! {response}')
 

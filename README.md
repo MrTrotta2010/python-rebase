@@ -1,14 +1,15 @@
-# Python ReBase [0.2.3]
+# Python ReBase [0.3.1]
 Este projeto é uma API escrita em Python para comunicação com o ReBase, um banco de dados de sessões de reabilitação física.
 
 ## Índice
-- [Python ReBase \[0.2.3\]](#python-rebase-023)
+- [Python ReBase \[0.3.1\]](#python-rebase-031)
   - [Índice](#índice)
   - [Visão Geral](#visão-geral)
     - [Sobre o ReBase](#sobre-o-rebase)
   - [Instalação](#instalação)
   - [Requisitos](#requisitos)
   - [Quick Start](#quick-start)
+    - [Inicializando o ReBaseClient](#inicializando-o-rebaseclient)
     - [Criando um Movimento](#criando-um-movimento)
     - [Criando uma Sessão](#criando-uma-sessão)
     - [Buscando Movimentos e Sessões](#buscando-movimentos-e-sessões)
@@ -18,8 +19,8 @@ Este projeto é uma API escrita em Python para comunicação com o ReBase, um ba
     - [Paginação](#paginação)
   - [Exemplos](#exemplos)
   - [Documentação Completa](#documentação-completa)
+    - [ReBaseClient](#rebaseclient)
     - [Módulos](#módulos)
-      - [rebase\_client](#rebase_client)
       - [util](#util)
     - [Modelos](#modelos)
       - [APIResponse](#apiresponse)
@@ -37,8 +38,10 @@ O ReBase, do inglês *Rehabilitation Database*, é um baco de dados dedicado ao 
 
 Os **Movimentos** do ReBase representam os movimentos corporais capturados e são compostos por metadados, uma lista de *Articulações* e uma lista de **Registros**, que representam as rotações em X, y e z da Articulação a cada instante do Movimento. Os Movimentos podem pertencer a **Sessões**. Cada Sessão também contem metadados e pode conter múltiplos movimentos.
 
+Todos os usuários que desejarem acessar o ReBase precisam ter um token de autenticação cadastrados no sistema. Para receber um token, o usuário deve entrar em contato com o time de desenvolvimento através dos emails `mrtrotta2010@gmail.com` ou `diegocolombodias@gmail.com` e enviar o endereço de email que deseja cadastrar.
+
 ## Instalação
-O PyRebase pode ser instalado pelo terminal através do **PyPi** com os comandos:
+O Python ReBase pode ser instalado pelo terminal através do **PyPi** com os comandos:
 ```
 pip3 install python-rebase
 ```
@@ -49,15 +52,23 @@ python3 -m pip install python-rebase
 
 ## Requisitos
 * Esta biblioteca depende da biblioteca `requests`, utilizada para enviar requisições HTTP;
-* O Python ReBase está disponível apenas para Python 3.10 ou superior.
+* O Python ReBase está disponível apenas para Python 3.10 ou superior;
+* É necessário ter seu email e token de autenticação já cadastrados no ReBase.
 
 ## Quick Start
 Para utilizar a API, basta importar a biblioteca no começo do seu arquivo .py
 
+### Inicializando o ReBaseClient
+```Python
+from python_rebase.rebase_client import ReBaseClient
+
+# Inicialize o cliente do ReBase com seu email e token previamente cadastrados
+rebase_client = ReBaseClient('exemplo@gmail.com', 'tokenExemplo')
+```
+
 ### Criando um Movimento
 ```Python
 from python_rebase.movement import Movement
-from python_rebase import rebase_client
 
 # Crie um objeto Movement
 movement = Movement({
@@ -194,10 +205,16 @@ Esta biblioteca inclui a pasta `examples`, que inclui alguns códigos-exemplo b�
 ## Documentação Completa
 A seguir, estão incluídas tabelas e descrições detalhando todas as classes e módulos da API Python ReBase.
 
-### Módulos
+### ReBaseClient
+Esta classe é responsável por toda a comunicação com o ReBaseRS. Seus métodos retornam objetos da classe [APIResponse](#apiresponse). Exemplos de uso podem ser encontrados na seção [Quick Start:](#quick-start). O ReBaseClient deve ser inicializado com o email e o token do usuários previamente cadastrados.
 
-#### rebase_client
-Este módulo é responsável por toda a comunicação com o ReBaseRS. Seus métodos retornam objetos da classe [APIResponse](#apiresponse). Exemplos de uso podem ser encontrados na seção [Quick Start:](#quick-start). 
+**Atributos:**
+| Atributo       | Tipo    |
+| :------------- | ------- |
+| **user_email** | **str** |
+| Email do usuário         |
+| **user_token** | **str** |
+| Token de autenticação do usuário |
 
 **Métodos:**
 | Método              | Retorno                         | Parâmetros                           |
@@ -212,16 +229,18 @@ Este módulo é responsável por toda a comunicação com o ReBaseRS. Seus méto
 | Atualiza um Movimento já existente no ReBase                                                 |
 | **delete_movement** | **[APIResponse](#apiresponse)** | **id: str**                          |
 | Exclui um Movimento do ReBase                                                                |
-| **fetch_sessions**  | **[APIResponse](#apiresponse)** | **professional_id: str = "", patient_id: str = "", movement_label: str = "", articulations: list = None, legacy: bool = False, page: int = 0, per: int = 0, previous_id: str = ""** |
-| Recupera uma lista de Sessões armazenadas no ReBaseRS. Suporta diversos filtros e paginação       |
-| **find_session**    | **[APIResponse](#apiresponse)** | **id: str, legacy: bool = False**    |
-| Recupera uma Sessão específica a partir do ID. O parâmetro `legacy`, se `True`, retorna a Sessão no formato antigo do ReBase |
+| **fetch_sessions**  | **[APIResponse](#apiresponse)** | **professional_id: str = "", patient_id: str = "", movement_label: str = "", articulations: list = None, legacy: bool = False, deep: bool = False, page: int = 0, per: int = 0, previous_id: str = ""** |
+| Recupera uma lista de Sessões armazenadas no ReBaseRS. Suporta diversos filtros e paginação. O parâmetro `legacy`, se `True`, retorna as Sessões no formato antigo do ReBase. Caso o parâmetro `deep` seja `True`, retorna também os Movimentos das Sessões, caso contrário, retorna apenas os IDs dos Movimentos |
+| **find_session**    | **[APIResponse](#apiresponse)** | **id: str, legacy: bool = False, deep: bool = False** |
+| Recupera uma Sessão específica a partir do ID. O parâmetro `legacy`, se `True`, retorna a Sessão no formato antigo do ReBase. Caso o parâmetro `deep` seja `True`, retorna também os Movimentos da Sessão, caso contrário, retorna apenas os IDs dos Movimentos |
 | **insert_session**  | **[APIResponse](#apiresponse)** | **session: [Session](#session)**     |
 | Insere uma Sessão no ReBase                                                                  |
 | **update_session**  | **[APIResponse](#apiresponse)** | **session: [Session](#session)**     |
 | Atualiza uma Sessão já existente no ReBase                                                   |
 | **delete_session**  | **[APIResponse](#apiresponse)** | **id: str, deep: bool = False**      |
-| Exclui uma Sessão do ReBase                                                                  |
+| Exclui uma Sessão do ReBase. Caso o parâmetro `deep` seja `True`, deleta também seus Movimentos |
+
+### Módulos
 
 #### util
 O módulo `util` contém diversos métodos utilitários. 
