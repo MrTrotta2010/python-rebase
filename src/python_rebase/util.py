@@ -1,6 +1,6 @@
 """Module that provides utility functions"""
 
-# Copyright © 2023 Tiago Trotta
+# Copyright © 2023-2024 Tiago Trotta
 
 # This file is part of PyReBase.
 

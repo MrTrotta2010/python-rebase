@@ -1,6 +1,6 @@
 """Module that provides methods for send requests to the ReBase Server"""
 
-# Copyright © 2023 Tiago Trotta
+# Copyright © 2023-2024 Tiago Trotta
 
 # This file is part of PyReBase.
 
