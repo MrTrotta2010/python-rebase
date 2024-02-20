@@ -19,8 +19,8 @@ Este projeto é uma API escrita em Python para comunicação com o ReBase, um ba
     - [Paginação](#paginação)
   - [Exemplos](#exemplos)
   - [Documentação Completa](#documentação-completa)
+    - [ReBaseClient](#rebaseclient)
     - [Módulos](#módulos)
-      - [rebase\_client](#rebase_client)
       - [util](#util)
     - [Modelos](#modelos)
       - [APIResponse](#apiresponse)
@@ -205,10 +205,16 @@ Esta biblioteca inclui a pasta `examples`, que inclui alguns códigos-exemplo b�
 ## Documentação Completa
 A seguir, estão incluídas tabelas e descrições detalhando todas as classes e módulos da API Python ReBase.
 
-### Módulos
+### ReBaseClient
+Esta classe é responsável por toda a comunicação com o ReBaseRS. Seus métodos retornam objetos da classe [APIResponse](#apiresponse). Exemplos de uso podem ser encontrados na seção [Quick Start:](#quick-start). O ReBaseClient deve ser inicializado com o email e o token do usuários previamente cadastrados.
 
-#### rebase_client
-Este módulo é responsável por toda a comunicação com o ReBaseRS. Seus métodos retornam objetos da classe [APIResponse](#apiresponse). Exemplos de uso podem ser encontrados na seção [Quick Start:](#quick-start). 
+**Atributos:**
+| Atributo       | Tipo    |
+| :------------- | ------- |
+| **user_email** | **str** |
+| Email do usuário         |
+| **user_token** | **str** |
+| Token de autenticação do usuário |
 
 **Métodos:**
 | Método              | Retorno                         | Parâmetros                           |
@@ -223,16 +229,18 @@ Este módulo é responsável por toda a comunicação com o ReBaseRS. Seus méto
 | Atualiza um Movimento já existente no ReBase                                                 |
 | **delete_movement** | **[APIResponse](#apiresponse)** | **id: str**                          |
 | Exclui um Movimento do ReBase                                                                |
-| **fetch_sessions**  | **[APIResponse](#apiresponse)** | **professional_id: str = "", patient_id: str = "", movement_label: str = "", articulations: list = None, legacy: bool = False, page: int = 0, per: int = 0, previous_id: str = ""** |
-| Recupera uma lista de Sessões armazenadas no ReBaseRS. Suporta diversos filtros e paginação       |
-| **find_session**    | **[APIResponse](#apiresponse)** | **id: str, legacy: bool = False**    |
-| Recupera uma Sessão específica a partir do ID. O parâmetro `legacy`, se `True`, retorna a Sessão no formato antigo do ReBase |
+| **fetch_sessions**  | **[APIResponse](#apiresponse)** | **professional_id: str = "", patient_id: str = "", movement_label: str = "", articulations: list = None, legacy: bool = False, deep: bool = False, page: int = 0, per: int = 0, previous_id: str = ""** |
+| Recupera uma lista de Sessões armazenadas no ReBaseRS. Suporta diversos filtros e paginação. O parâmetro `legacy`, se `True`, retorna as Sessões no formato antigo do ReBase. Caso o parâmetro `deep` seja `True`, retorna também os Movimentos das Sessões, caso contrário, retorna apenas os IDs dos Movimentos |
+| **find_session**    | **[APIResponse](#apiresponse)** | **id: str, legacy: bool = False, deep: bool = False** |
+| Recupera uma Sessão específica a partir do ID. O parâmetro `legacy`, se `True`, retorna a Sessão no formato antigo do ReBase. Caso o parâmetro `deep` seja `True`, retorna também os Movimentos da Sessão, caso contrário, retorna apenas os IDs dos Movimentos |
 | **insert_session**  | **[APIResponse](#apiresponse)** | **session: [Session](#session)**     |
 | Insere uma Sessão no ReBase                                                                  |
 | **update_session**  | **[APIResponse](#apiresponse)** | **session: [Session](#session)**     |
 | Atualiza uma Sessão já existente no ReBase                                                   |
 | **delete_session**  | **[APIResponse](#apiresponse)** | **id: str, deep: bool = False**      |
-| Exclui uma Sessão do ReBase                                                                  |
+| Exclui uma Sessão do ReBase. Caso o parâmetro `deep` seja `True`, deleta também seus Movimentos |
+
+### Módulos
 
 #### util
 O módulo `util` contém diversos métodos utilitários. 
