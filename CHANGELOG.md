@@ -5,6 +5,13 @@ Todas as mudanças notáveis deste projeto serão documentadas neste arquivo.
 Este formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2024-02-20
+
+### Alterado
+- A partir deste update, **qualquer usuário que quiser acessar o ReBase precisa ter um token de autenticação cadastrado no sistema**. Para receber um token, o usuário deve entrar em contato com o time de desenvolvimento através dos emails `mrtrotta2010@gmail.com` ou `diegocolombodias@gmail.com` e enviar o endereço de email que deseja cadastrar;
+- O módulo `rebase_client` foi transformado na classe `ReBaseClient`. A classe ainda desempenha o mesmo papel, porém agora é necessário inicializá-la passando o email e o token cadastrados do usuário;
+- No cabeçalho das requisições agora são enviados o email cadastrado e o token do usuário nos headers **"rebase-user-email"** e **"rebase-user-token"**.
+
 ## [0.2.3] - 2023-12-22
 
 ### Corrigido

@@ -1,11 +1,13 @@
 """Module that provides usage examples of the Movement class"""
 import sys
-from src.python_rebase import rebase_client
+from src.python_rebase.rebase_client import ReBaseClient
 from src.python_rebase.movement import Movement
 from src.python_rebase.register import Register
 from src.python_rebase.rotation import Rotation
 
 sys.path.append('..')
+
+rebase_client = ReBaseClient('your@email.com', 'your_token')
 
 movement = Movement({
 	'label': 'NewAPITest',

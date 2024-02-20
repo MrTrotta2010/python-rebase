@@ -1,10 +1,12 @@
 """Module that provides usage examples of the Session class"""
 import sys
-from src.python_rebase import rebase_client
+from src.python_rebase.rebase_client import ReBaseClient
 from src.python_rebase.session import Session
 from src.python_rebase.movement import Movement
 
 sys.path.append('..')
+
+rebase_client = ReBaseClient('your@email.com', 'your_token')
 
 session = Session({
 	'title': 'NewAPITest',

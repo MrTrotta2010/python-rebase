@@ -1,14 +1,15 @@
-# Python ReBase [0.2.3]
+# Python ReBase [0.3.0]
 Este projeto é uma API escrita em Python para comunicação com o ReBase, um banco de dados de sessões de reabilitação física.
 
 ## Índice
-- [Python ReBase \[0.2.3\]](#python-rebase-023)
+- [Python ReBase \[0.3.0\]](#python-rebase-030)
   - [Índice](#índice)
   - [Visão Geral](#visão-geral)
     - [Sobre o ReBase](#sobre-o-rebase)
   - [Instalação](#instalação)
   - [Requisitos](#requisitos)
   - [Quick Start](#quick-start)
+    - [Inicializando o ReBaseClient](#inicializando-o-rebaseclient)
     - [Criando um Movimento](#criando-um-movimento)
     - [Criando uma Sessão](#criando-uma-sessão)
     - [Buscando Movimentos e Sessões](#buscando-movimentos-e-sessões)
@@ -37,6 +38,8 @@ O ReBase, do inglês *Rehabilitation Database*, é um baco de dados dedicado ao 
 
 Os **Movimentos** do ReBase representam os movimentos corporais capturados e são compostos por metadados, uma lista de *Articulações* e uma lista de **Registros**, que representam as rotações em X, y e z da Articulação a cada instante do Movimento. Os Movimentos podem pertencer a **Sessões**. Cada Sessão também contem metadados e pode conter múltiplos movimentos.
 
+Todos os usuários que desejarem acessar o ReBase precisam ter um token de autenticação cadastrados no sistema. Para receber um token, o usuário deve entrar em contato com o time de desenvolvimento através dos emails `mrtrotta2010@gmail.com` ou `diegocolombodias@gmail.com` e enviar o endereço de email que deseja cadastrar.
+
 ## Instalação
 O Python ReBase pode ser instalado pelo terminal através do **PyPi** com os comandos:
 ```
@@ -49,15 +52,23 @@ python3 -m pip install python-rebase
 
 ## Requisitos
 * Esta biblioteca depende da biblioteca `requests`, utilizada para enviar requisições HTTP;
-* O Python ReBase está disponível apenas para Python 3.10 ou superior.
+* O Python ReBase está disponível apenas para Python 3.10 ou superior;
+* É necessário ter seu email e token de autenticação já cadastrados no ReBase.
 
 ## Quick Start
 Para utilizar a API, basta importar a biblioteca no começo do seu arquivo .py
 
+### Inicializando o ReBaseClient
+```Python
+from python_rebase.rebase_client import ReBaseClient
+
+# Inicialize o cliente do ReBase com seu email e token previamente cadastrados
+rebase_client = ReBaseClient('exemplo@gmail.com', 'tokenExemplo')
+```
+
 ### Criando um Movimento
 ```Python
 from python_rebase.movement import Movement
-from python_rebase import rebase_client
 
 # Crie um objeto Movement
 movement = Movement({
