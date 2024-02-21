@@ -29,6 +29,7 @@ Este projeto é uma API escrita em Python para comunicação com o ReBase, um ba
       - [Rotation](#rotation)
       - [Session](#session)
     - [Erros](#erros)
+  - [Contato](#contato)
 
 ## Visão Geral
 O pacote Python ReBase contém classes-modelo para Sessões e Movimentos. A classe `api_response` modela de forma generalizada as respostas enviadas pelo `ReBaseRS`. O módulo `rebase_client` é responsável pelo envio de requisições ao ReBaseRS. Estão inclusas também algumas exceções personalizadas e funções utilitárias. Todos os módulos se encontram na pasta `src/python_rebase`.
@@ -444,3 +445,7 @@ A biblioteca Python ReBase define alguns erros personalizados para os modelos de
 1. **MismatchedArticulationsError:** disparado ao criar um Movimento com Registros que tenham articulações diferentes das definidas no Movimento ou ao adicionar a um Movimento um Registro que tenha articulações diferentes das do Movimento;
 2. **MissingAttributeError:** disparado ao tentar enviar uma requisição ao ReBaseRS e algum parâmetro não tenha um atributo obrigatório;
 3. **RepeatedArticulationError:** disparado ao criar um Movimento ou um Registro com uma lista de articulações que contenha articulações repetidas.
+
+## Contato
+* **Tiago Trotta**: *mrtrotta2010@gmail.com*
+* **Diego Dias**: *diegocolombodias@gmail.com*
