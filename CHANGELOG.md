@@ -5,6 +5,11 @@ Todas as mudanças notáveis deste projeto serão documentadas neste arquivo.
 Este formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.2] - 2024-02-21
+
+### Adicionado
+- Informações de contato ao `README.md`.
+
 ## [0.3.1] - 2024-02-20
 
 ### Corrigido
