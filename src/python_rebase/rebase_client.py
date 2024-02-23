@@ -21,6 +21,7 @@ from enum import Enum
 import requests
 
 from .missing_attribute_error import MissingAttributeError
+from .unauthorized_user_error import UnauthorizedUserError
 from .api_response import APIResponse
 from .movement import Movement
 from .session import Session
@@ -30,6 +31,7 @@ _SERVER_URL = "http://projetorastreamento.com.br:3030/"
 class _Resource(Enum):
     MOVEMENT = 0
     SESSION = 1
+    AUTHENTICATION = 2
 
 class _Method(Enum):
     GET = 0
@@ -40,7 +42,7 @@ class _Method(Enum):
 class ReBaseClient:
     """Class that provides methods for sending requests to the ReBaseRS"""
 
-    def __init__(self, user_email: str, user_token: str):
+    def __init__(self, user_email: str, user_token: str, try_authenticate: bool = False):
         if user_email is None or not isinstance(user_email, str):
             raise ValueError('user_email must be provided and be a string')
         if user_token is None or not isinstance(user_token, str):
@@ -49,10 +51,20 @@ class ReBaseClient:
         self.user_email = user_email
         self.user_token = user_token
 
+        if try_authenticate:
+            response = self.authenticate()
+            if not response.success:
+                raise UnauthorizedUserError(user_mail=user_email, auth_token=user_token)
+
     def __get_headers(self):
         return { 'rebase-user-email': self.user_email, 'rebase-user-token': self.user_token }
 
     _authentication_headers = property(fget=__get_headers, doc='The authentication headers used in the requests')
+
+    def authenticate(self) -> APIResponse:
+        """"Authenticates the user with the user_email and user_token provided in the constructor"""
+
+        return self.__send_request(_Method.GET, _Resource.AUTHENTICATION, APIResponse.ResponseType.AUTHENTICATION)
 
     def fetch_movements(self, professional_id: str = '', patient_id: str = '', movement_label: str = '', articulations: list = None, legacy: bool = False, page: int = 0, per: int = 0, previous_id: str = '') -> APIResponse:
         """Gets a list of Movements. Can be filtered by professional_id, patient_id, movement_label
@@ -128,9 +140,13 @@ class ReBaseClient:
         return self.__send_request(_Method.DELETE, _Resource.SESSION, APIResponse.ResponseType.DELETE_SESSION, session_id, self.__format_params(deep=deep))
 
     def __send_request(self, method: _Method, resource: _Resource, response_type: APIResponse.ResponseType, resource_id: str = None, params: dict = None, data: dict = None) -> APIResponse:
-        url = _SERVER_URL + ('movement' if resource == _Resource.MOVEMENT else 'session')
-        if resource_id is not None:
-            url += f'/{resource_id}'
+        url = _SERVER_URL
+        
+        if resource == _Resource.MOVEMENT: url += 'movement'
+        elif resource == _Resource.SESSION: url += 'session'
+        else: url += 'auth'
+
+        if resource_id is not None: url += f'/{resource_id}'
 
         try:
             if method == _Method.GET:

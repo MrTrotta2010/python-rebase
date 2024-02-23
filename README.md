@@ -1,8 +1,8 @@
-# Python ReBase [0.3.2]
+# Python ReBase [0.3.3]
 Este projeto é uma API escrita em Python para comunicação com o ReBase, um banco de dados de sessões de reabilitação física.
 
 ## Índice
-- [Python ReBase \[0.3.2\]](#python-rebase-032)
+- [Python ReBase \[0.3.3\]](#python-rebase-033)
   - [Índice](#índice)
   - [Visão Geral](#visão-geral)
     - [Sobre o ReBase](#sobre-o-rebase)
@@ -220,7 +220,11 @@ Esta classe é responsável por toda a comunicação com o ReBaseRS. Seus métod
 **Métodos:**
 | Método              | Retorno                         | Parâmetros                           |
 | :------------------ | :------------------------------ | -----------------------------------: |
-| **fetch_movements** | **[APIResponse](#apiresponse)** |**professional_id: str = "", patient_id: str = "", movementLabel: str = "", articulations: list = None, legacy: bool = False, page: int = 0, per: int = 0, previous_id: str = ""** |
+| **\_\_init\_\_**        | None                            | **user_email: str, user_token: str, try_authenticate: bool = False** |
+| Método de inicialização da classe. Recebe o endereço de email e o token de acesso do usuário. É possível tentar autenticar o usuário no momento da inicialização, passando o argumento `try_authenticate=True`, porém, caso a autenticação falhe neste ponto, será lançado um erro `UnauthorizedUserError` |
+| **authenticate**    | **[APIResponse](#apiresponse)** |                                      |
+| Envia uma requisição de autenticação que não executa nenhum operação sobre o banco de dados. O envio desta requisição não é obrigatório, visto que todas as outras requisições também realizam autenticação |
+| **fetch_movements** | **[APIResponse](#apiresponse)** | **professional_id: str = "", patient_id: str = "", movementLabel: str = "", articulations: list = None, legacy: bool = False, page: int = 0, per: int = 0, previous_id: str = ""** |
 | Recupera uma lista de Movimentos armazenados no ReBaseRS. Suporta diversos filtros e paginação |
 | **find_movement**   | **[APIResponse](#apiresponse)** | **id: str, legacy: bool = False**    |
 | Recupera um Movimento específico a partir do ID. O parâmetro `legacy`, se `True`, retorna o Movimento no formato antigo do ReBase |
@@ -445,6 +449,7 @@ A biblioteca Python ReBase define alguns erros personalizados para os modelos de
 1. **MismatchedArticulationsError:** disparado ao criar um Movimento com Registros que tenham articulações diferentes das definidas no Movimento ou ao adicionar a um Movimento um Registro que tenha articulações diferentes das do Movimento;
 2. **MissingAttributeError:** disparado ao tentar enviar uma requisição ao ReBaseRS e algum parâmetro não tenha um atributo obrigatório;
 3. **RepeatedArticulationError:** disparado ao criar um Movimento ou um Registro com uma lista de articulações que contenha articulações repetidas.
+4. **UnauthorizedUserError:** disparado quando um objeto da classe ReBaseClient é inicializado com o parâmetro `try_authenticate=True` e a autenticação falha.
 
 ## Contato
 * **Tiago Trotta**: *mrtrotta2010@gmail.com*

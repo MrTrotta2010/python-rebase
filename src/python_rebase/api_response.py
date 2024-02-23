@@ -37,6 +37,7 @@ class APIResponse:
         UPDATE_SESSION = 9
         DELETE_SESSION = 10
         API_ERROR = 11
+        AUTHENTICATION = 12
 
     def __init__(self, response_type: ResponseType = None, status: int = 0, code: int = 200,
                     data: dict = None, meta: dict = None):
