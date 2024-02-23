@@ -141,7 +141,7 @@ class ReBaseClient:
 
     def __send_request(self, method: _Method, resource: _Resource, response_type: APIResponse.ResponseType, resource_id: str = None, params: dict = None, data: dict = None) -> APIResponse:
         url = _SERVER_URL
-        
+
         if resource == _Resource.MOVEMENT: url += 'movement'
         elif resource == _Resource.SESSION: url += 'session'
         else: url += 'auth'
