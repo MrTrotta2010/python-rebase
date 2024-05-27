@@ -155,7 +155,7 @@ class ReBaseClient:
                 response = requests.post(url, headers={ 'Content-Type': 'application/json', **self._authentication_headers }, params=params, data=data, timeout=30)
             elif method == _Method.PUT:
                 response = requests.put(url, headers={ 'Content-Type': 'application/json', **self._authentication_headers }, params=params, data=data, timeout=30)
-            elif method == _Method.DELETE:
+            else: # method == _Method.DELETE
                 response = requests.delete(url, headers=self._authentication_headers, params=params, timeout=30)
         except requests.exceptions.RequestException as e:
             return self.__new_api_error_response(str(e))
